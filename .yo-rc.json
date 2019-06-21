@@ -1,0 +1,37 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "ch.puzzle.ln"
+    },
+    "jhipsterVersion": "6.1.1",
+    "applicationType": "monolith",
+    "baseName": "icedragon",
+    "packageName": "ch.puzzle.ln",
+    "packageFolder": "ch/puzzle/ln",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "YWM2NmVhNWQ1ZDI0M2UyNGY2ZDI4ZWY1ZTk1ZjY0YzBlMDExZGQ2NTZlNmFlNmVmOWMzMmIzZDAwZjRjNmZkNWNhMjE0Y2ZkNjgyMDFlZTRkZjdlMzU3ZWYyMGZmZTRlZjk5NDcyZTdlOWNiNmNiMWY1ZDY3NzhjZDc4YWVkNTk=",
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "lumen",
+    "clientThemeVariant": "primary",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false
+  }
+}
