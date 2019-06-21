@@ -2,8 +2,8 @@ package ch.puzzle.ln.icedragon.platform.entity;
 
 import ch.puzzle.ln.domain.User;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -11,10 +11,24 @@ import java.util.Objects;
 
 @Entity
 public class Subscription {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    private Long id;
+
+    @NotNull
+    @ManyToOne
     private User subscriber;
+
+    @NotNull
+    @ManyToOne
     private Platform platform;
+
+    @Column
     private Instant validFrom;
-    private long duration;
+    @Column
+    private Long duration;
     @Column(length = 255, unique = true, nullable = false)
     private String paymentHash;
     @Column(length = 255, unique = true, nullable = false)
@@ -51,11 +65,11 @@ public class Subscription {
         this.validFrom = validFrom;
     }
 
-    public long getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(long duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
 
