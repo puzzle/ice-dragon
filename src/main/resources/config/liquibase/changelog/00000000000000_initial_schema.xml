@@ -33,7 +33,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="lang_key" type="varchar(10)"/>
-            <column name="activation_key" type="varchar(20)"/>
+            <column name="activation_key" type="varchar(50)"/>
             <column name="reset_key" type="varchar(20)"/>
             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>

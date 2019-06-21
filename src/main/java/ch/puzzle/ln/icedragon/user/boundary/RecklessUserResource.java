@@ -5,8 +5,8 @@ import ch.puzzle.ln.icedragon.user.entity.RecklessLogin;
 import ch.puzzle.ln.icedragon.user.entity.RecklessPublicKey;
 import ch.puzzle.ln.security.jwt.JWTFilter;
 import ch.puzzle.ln.security.jwt.TokenProvider;
-import ch.puzzle.ln.web.rest.UserJWTController;
 import ch.puzzle.ln.web.rest.UserJWTController.JWTToken;
+import ch.puzzle.ln.web.rest.errors.InvalidPasswordException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+
+import static ch.puzzle.ln.security.AuthoritiesConstants.RECKLESS;
+import static ch.puzzle.ln.security.AuthoritiesConstants.USER;
 
 @RestController
 @RequestMapping("/api/recklessuser")
@@ -51,11 +54,13 @@ public class RecklessUserResource {
     }
 
     private Authentication authenticate(RecklessLogin login) {
-        recklessUserService.verifyChallenge(login);
+        if (!recklessUserService.isValidChallengeResponse(login)) {
+           throw new InvalidPasswordException();
+        }
         return new Authentication() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
-                return List.of(new SimpleGrantedAuthority("RECKLESS"));
+                return List.of(new SimpleGrantedAuthority(RECKLESS), new SimpleGrantedAuthority(USER));
             }
 
             @Override
@@ -85,7 +90,7 @@ public class RecklessUserResource {
 
             @Override
             public String getName() {
-                return "reckless";
+                return login.getNodePublicKey();
             }
         };
     }
