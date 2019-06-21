@@ -219,6 +219,10 @@ objects:
           containers:
             - env:
                 # Spring
+                - name: SPRING_LIQUIBASE_DROP_FIRST
+                  value: "${SPRING_LIQUIBASE_DROP_FIRST}"
+                - name: SPRING_LIQUIBASE_CONTEXTS
+                  value: ${SPRING_LIQUIBASE_CONTEXTS}
                 - name: SPRING_PROFILES_ACTIVE
                   value: ${SPRING_PROFILES_ACTIVE}
                 - name: SPRING_DATASOURCE_URL
