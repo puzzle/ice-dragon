@@ -149,4 +149,7 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  lnd:
+    invoiceExpirySeconds: 300
+    certPath: classpath:/certs/dev-puzzle-test.cert

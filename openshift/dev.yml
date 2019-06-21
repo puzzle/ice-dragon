@@ -8,3 +8,7 @@ SPRING_MAIL_HOST: mail.puzzle.ch
 SPRING_MAIL_PORT: 25
 ROUTE_INSECURE_TRAFFIC: Allow
 POSTGRESQL_PASSWORD: KGo1CpbU1Dj58FYW
+APPLICATION_LND_HOST: not-commited-to-git-entered-manually-on-platform
+APPLICATION_LND_PORT: 10009
+APPLICATION_LND_INVOICE_MACAROON_HEX: not-commited-to-git-entered-manually-on-platform
+APPLICATION_LND_READONLY_MACAROON_HEX: not-commited-to-git-entered-manually-on-platform

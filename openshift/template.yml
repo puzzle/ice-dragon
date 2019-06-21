@@ -237,6 +237,15 @@ objects:
                   value: ${JHIPSTER_MAIL_BASE_URL}
                 - name: JHIPSTER_CORS_ALLOWED_ORIGINS
                   value: ${JHIPSTER_CORS_ALLOWED_ORIGINS}
+                # Application
+                - name: APPLICATION_LND_HOST
+                  value: ${APPLICATION_LND_HOST}
+                - name: APPLICATION_LND_PORT
+                  value: ${APPLICATION_LND_PORT}
+                - name: APPLICATION_LND_INVOICE_MACAROON_HEX
+                  value: ${APPLICATION_LND_INVOICE_MACAROON_HEX}
+                - name: APPLICATION_LND_READONLY_MACAROON_HEX
+                  value: ${APPLICATION_LND_READONLY_MACAROON_HEX}
               image: ice-dragon
               imagePullPolicy: Always
               livenessProbe:
@@ -457,4 +466,20 @@ parameters:
 
   - name: JHIPSTER_CORS_ALLOWED_ORIGINS
     description: Set it to non-empty when CORS should be allowed
+    value: ""
+
+  - name: APPLICATION_LND_HOST
+    description: Host of the LND instance
+    value: "localhost"
+
+  - name: APPLICATION_LND_PORT
+    description: Port of the LND instance gRPC
+    value: ""
+
+  - name: APPLICATION_LND_INVOICE_MACAROON_HEX
+    description: Invoice macaroon serialized in hex
+    value: ""
+
+  - name: APPLICATION_LND_READONLY_MACAROON_HEX
+    description: Readonly macaroon serialized in hex
     value: ""

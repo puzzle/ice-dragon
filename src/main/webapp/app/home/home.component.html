@@ -2,12 +2,18 @@
     <div class="col-md-3">
         <span class="hipster img-fluid rounded"></span>
     </div>
-    <div class="col-md-9">
-        <div *ngIf="webln">
-            You have WebLN enabled! Nice, log in with our node now.
+    <div class="col-md-9" *ngIf="!isAuthenticated()">
+        <div *ngIf="webLN">
+            You have WebLN enabled, your node Public Key is <code>{{info?.node?.pubkey}}</code>!<br/>
+            Very nice, you can now log in with our node.<br/><br/>
+
+            <button (click)="loginReckless()">Login #reckless</button>
         </div>
-        <div *ngIf="!webln">
+        <div *ngIf="!webLN">
             No WebLN :-(
         </div>
+    </div>
+    <div class="col-md-9" *ngIf="isAuthenticated()">
+        Welcome to the Ice Dragon platform, user <code>{{account.login}}</code>.
     </div>
 </div>
