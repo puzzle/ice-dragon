@@ -1,5 +1,5 @@
-ROUTE_HOST: icedragon.ose3.puzzle.ch
-JHIPSTER_MAIL_BASE_URL: 'https://icedragon.ose3.puzzle.ch'
+ROUTE_HOST: ice-dragon.ose3.puzzle.ch
+JHIPSTER_MAIL_BASE_URL: 'https://ice-dragon.ose3.puzzle.ch'
 JHIPSTER_MAIL_FROM: 'lightning@puzzle.ch'
 JHIPSTER_CORS_ALLOWED_ORIGINS: ''
 SPRING_LIQUIBASE_DROP_FIRST: true

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { LoginModalService, AccountService, Account } from 'app/core';
+import { Account, AccountService, LoginModalService } from 'app/core';
+
+import { requestProvider } from 'webln';
 
 @Component({
   selector: 'jhi-home',
@@ -12,6 +14,7 @@ import { LoginModalService, AccountService, Account } from 'app/core';
 export class HomeComponent implements OnInit {
   account: Account;
   modalRef: NgbModalRef;
+  webln: any;
 
   constructor(
     private accountService: AccountService,
@@ -24,6 +27,7 @@ export class HomeComponent implements OnInit {
       this.account = account;
     });
     this.registerAuthenticationSuccess();
+    this.registerWebLN();
   }
 
   registerAuthenticationSuccess() {
@@ -31,6 +35,12 @@ export class HomeComponent implements OnInit {
       this.accountService.identity().then(account => {
         this.account = account;
       });
+    });
+  }
+
+  registerWebLN() {
+    requestProvider().then(provider => {
+      this.webln = provider;
     });
   }
 
