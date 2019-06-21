@@ -5,12 +5,12 @@ import io.grpc.netty.GrpcSslContexts;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
-import org.lightningj.lnd.proto.LightningApi;
 import org.lightningj.lnd.wrapper.AsynchronousLndAPI;
 import org.lightningj.lnd.wrapper.StatusException;
 import org.lightningj.lnd.wrapper.SynchronousLndAPI;
 import org.lightningj.lnd.wrapper.ValidationException;
-import org.lightningj.lnd.wrapper.message.VerifyMessageRequest;
+import org.lightningj.lnd.wrapper.message.AddInvoiceResponse;
+import org.lightningj.lnd.wrapper.message.Invoice;
 import org.lightningj.lnd.wrapper.message.VerifyMessageResponse;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -36,6 +36,13 @@ public class LndService {
         if (!response.getPubkey().equals(publicKey)) {
             throw new ValidationException("Public keys do not coincide", null);
         }
+    }
+
+    public AddInvoiceResponse getInvoice(String message, long amount) throws IOException, StatusException, ValidationException {
+        Invoice invoice = new Invoice();
+        invoice.setValue(amount);
+        invoice.setMemo(message);
+        return getSyncInvoiceApi().addInvoice(invoice);
     }
 
 

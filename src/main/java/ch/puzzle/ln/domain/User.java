@@ -1,7 +1,8 @@
 package ch.puzzle.ln.domain;
 
 import ch.puzzle.ln.config.Constants;
-
+import ch.puzzle.ln.icedragon.platform.entity.Platform;
+import ch.puzzle.ln.icedragon.platform.entity.Subscription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
@@ -97,6 +99,20 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+
+    @ManyToMany
+    @JoinTable(
+        name = "subscription",
+        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "subscription_id", referencedColumnName = "id")})
+    private List<Subscription> subscriptions;
+    @ManyToMany
+    @JoinTable(
+        name = "subscription",
+        joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "platform_id", referencedColumnName = "id")})
+    private List<Platform> platforms;
 
     public Long getId() {
         return id;
@@ -207,6 +223,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Transient
     public boolean isReckless() {
         return Objects.equals(this.password, RECKLESS_USER_PASSWORD_VALUE);
+    }
+
+    public List<Subscription> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(List<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public List<Platform> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(List<Platform> platforms) {
+        this.platforms = platforms;
     }
 
     @Override

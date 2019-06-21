@@ -152,4 +152,80 @@
             <column name="local_date" type="date"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="00000000000003" author="selbert">
+        <createTable tableName="platform">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints unique="true" nullable="false" uniqueConstraintName="ux_platform_name"/>
+            </column>
+            <column name="amount_per_hour" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="subscription">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="platform_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="validFrom" type="timestamp"/>
+            <column name="duration" type="bigint"/>
+            <column name="payment_hash" type="varchar(255)"/>
+            <column name="pre_image" type="varchar(255)"/>
+            <column name="invoice_string" type="varchar(255)"/>
+        </createTable>
+
+
+        <createTable tableName="jhi_user_platform">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="platform_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="user_id, platform_id" tableName="jhi_user_platform"/>
+
+        <addForeignKeyConstraint baseColumnNames="platform_id"
+                                 baseTableName="jhi_user_platform"
+                                 constraintName="fk_jhi_user_platform_platform_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="platform"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="jhi_user_authority"
+                                 constraintName="fk_jhi_user_platform_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <createTable tableName="jhi_user_subscription">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscription_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="user_id, subscription_id" tableName="jhi_user_subscription"/>
+
+        <addForeignKeyConstraint baseColumnNames="subscription_id"
+                                 baseTableName="jhi_user_subscription"
+                                 constraintName="jhi_user_subscription_subscription_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="subscription"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="jhi_user_subscription"
+                                 constraintName="jhi_user_subscription_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+    </changeSet>
 </databaseChangeLog>
