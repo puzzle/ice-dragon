@@ -1,5 +1,6 @@
 package ch.puzzle.ln.config;
 
+import org.lightningj.lnd.wrapper.MacaroonContext;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -11,4 +12,75 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
 
+    private Lnd lnd = new Lnd();
+
+    public Lnd getLnd() {
+        return lnd;
+    }
+
+    public static class Lnd {
+
+        private String host;
+        private int port;
+        private String certPath;
+        private String invoiceMacaroonHex;
+        private String readonlyMacaroonHex;
+        private Long invoiceExpirySeconds;
+
+        public String getHost() {
+            return host;
+        }
+
+        public void setHost(String host) {
+            this.host = host;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(int port) {
+            this.port = port;
+        }
+
+        public String getCertPath() {
+            return certPath;
+        }
+
+        public void setCertPath(String certPath) {
+            this.certPath = certPath;
+        }
+
+        public String getInvoiceMacaroonHex() {
+            return invoiceMacaroonHex;
+        }
+
+        public MacaroonContext getInvoiceMacaroonContext() {
+            return () -> invoiceMacaroonHex;
+        }
+
+        public void setInvoiceMacaroonHex(String invoiceMacaroonHex) {
+            this.invoiceMacaroonHex = invoiceMacaroonHex;
+        }
+
+        public String getReadonlyMacaroonHex() {
+            return readonlyMacaroonHex;
+        }
+
+        public MacaroonContext getReadonlyMacaroonContext() {
+            return () -> readonlyMacaroonHex;
+        }
+
+        public void setReadonlyMacaroonHex(String readonlyMacaroonHex) {
+            this.readonlyMacaroonHex = readonlyMacaroonHex;
+        }
+
+        public Long getInvoiceExpirySeconds() {
+            return invoiceExpirySeconds;
+        }
+
+        public void setInvoiceExpirySeconds(Long invoiceExpirySeconds) {
+            this.invoiceExpirySeconds = invoiceExpirySeconds;
+        }
+    }
 }

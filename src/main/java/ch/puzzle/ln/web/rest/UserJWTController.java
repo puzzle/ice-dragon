@@ -51,11 +51,11 @@ public class UserJWTController {
     /**
      * Object to return as body in JWT Authentication.
      */
-    static class JWTToken {
+    public static class JWTToken {
 
         private String idToken;
 
-        JWTToken(String idToken) {
+        public JWTToken(String idToken) {
             this.idToken = idToken;
         }
 
