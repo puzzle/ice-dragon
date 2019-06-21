@@ -158,6 +158,9 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="owner_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
             <column name="name" type="varchar(255)">
                 <constraints unique="true" nullable="false" uniqueConstraintName="ux_platform_name"/>
             </column>
@@ -165,6 +168,12 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="owner_id"
+                                 baseTableName="platform"
+                                 constraintName="fk_platform_user"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
 
         <createTable tableName="subscription">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
