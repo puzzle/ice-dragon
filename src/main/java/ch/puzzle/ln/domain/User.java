@@ -3,6 +3,7 @@ package ch.puzzle.ln.domain;
 import ch.puzzle.ln.config.Constants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
@@ -17,6 +18,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -26,6 +28,8 @@ import java.util.Set;
 @Table(name = "jhi_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity implements Serializable {
+
+    public static final String RECKLESS_USER_PASSWORD_VALUE = "this-is-a-dummy-value-that-means-a-user-logged-in-recklessly";
 
     private static final long serialVersionUID = 1L;
 
@@ -197,6 +201,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    @JsonProperty
+    @Transient
+    public boolean isReckless() {
+        return Objects.equals(this.password, RECKLESS_USER_PASSWORD_VALUE);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class RecklessUserService {
             .orElseGet(() -> {
                 User newUser = new User();
                 newUser.setLogin(recklessPublicKey.getNodePublicKey());
-                newUser.setPassword("youre-dumb-but-im-dummy-youre-dumb-but-im-dummy-recklessssss");
+                newUser.setPassword(User.RECKLESS_USER_PASSWORD_VALUE);
                 newUser.setAuthorities(getAuthorities());
                 return newUser;
             });

@@ -53,6 +53,8 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private boolean isReckless;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -73,6 +75,7 @@ public class UserDTO {
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
+        this.isReckless = user.isReckless();
     }
 
     public Long getId() {
@@ -177,6 +180,14 @@ public class UserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public boolean isReckless() {
+        return isReckless;
+    }
+
+    public void setReckless(boolean reckless) {
+        isReckless = reckless;
     }
 
     @Override

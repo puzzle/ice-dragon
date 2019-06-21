@@ -1,11 +1,11 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { IcedragonSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective } from './';
+import { IcedragonSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective, LacksAuthorityDirective } from './';
 
 @NgModule({
   imports: [IcedragonSharedCommonModule],
-  declarations: [JhiLoginModalComponent, HasAnyAuthorityDirective],
+  declarations: [JhiLoginModalComponent, HasAnyAuthorityDirective, LacksAuthorityDirective],
   entryComponents: [JhiLoginModalComponent],
-  exports: [IcedragonSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective],
+  exports: [IcedragonSharedCommonModule, JhiLoginModalComponent, HasAnyAuthorityDirective, LacksAuthorityDirective],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class IcedragonSharedModule {
