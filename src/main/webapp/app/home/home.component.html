@@ -3,15 +3,20 @@
         <span class="hipster img-fluid rounded"></span>
     </div>
     <div class="col-md-9" *ngIf="!isAuthenticated()">
-        <div *ngIf="webLN">
-            You have WebLN enabled, your node Public Key is <code>{{info?.node?.pubkey}}</code>!<br/>
+        <p *ngIf="webLN">
+            Congratulations, you have WebLN enabled, your node Public Key is <code>{{info?.node?.pubkey}}</code>!<br/>
             Very nice, you can now log in with our node.<br/><br/>
 
-            <button (click)="loginReckless()">Login #reckless</button>
-        </div>
-        <div *ngIf="!webLN">
-            No WebLN :-(
-        </div>
+            <button class="btn btn-primary jh-create-entity" (click)="loginReckless()">
+                <fa-icon [icon]="'sign-in-alt'"></fa-icon> <span>#reckless login</span>
+            </button>
+        </p>
+        <p *ngIf="!webLN">
+            You don't seem to have the <a href="https://github.com/joule-labs/joule-extension">Joule Extension</a>
+            installed or enabled in your browser.<br/><br/>
+            Please <a routerLink="register">create an account</a> the old fashioned way.<br/>
+            If you already have an account, please <a tabindex="-1" (click)="login()">log in</a>.
+        </p>
     </div>
     <div class="col-md-9" *ngIf="isAuthenticated()">
         Welcome to the Ice Dragon platform, user <code>{{account.login}}</code>.

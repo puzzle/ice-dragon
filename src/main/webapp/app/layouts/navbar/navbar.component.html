@@ -90,62 +90,41 @@
           <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
         </ul>
       </li>
-      <li
-        ngbDropdown
-        class="nav-item dropdown pointer"
-        placement="bottom-right"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
-        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
-          <span *ngIf="!getImageUrl()">
-            <fa-icon icon="user"></fa-icon>
-            <span>
-              Account
-            </span>
-          </span>
-          <span *ngIf="getImageUrl()">
-            <img [src]="getImageUrl()" class="profile-image rounded-circle" alt="Avatar" />
-          </span>
+      <li *ngSwitchCase="true" routerLinkActive="active" class="nav-item">
+        <a class="nav-link" routerLink="settings" (click)="collapseNavbar()">
+          <fa-icon icon="wrench" fixedWidth="true"></fa-icon>
+          <span>Settings</span>
         </a>
-        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
-          <li *ngSwitchCase="true">
-            <a class="dropdown-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
-              <fa-icon icon="wrench" fixedWidth="true"></fa-icon>
-              <span>Settings</span>
-            </a>
-          </li>
-          <li *ngSwitchCase="true">
-            <a
-              *jhiLacksAuthority="'ROLE_RECKLESS'"
-              class="dropdown-item"
-              routerLink="password"
-              routerLinkActive="active"
-              (click)="collapseNavbar()"
-            >
-              <fa-icon icon="lock" fixedWidth="true"></fa-icon>
-              <span>Password</span>
-            </a>
-          </li>
-          <li *ngSwitchCase="true">
-            <a class="dropdown-item" (click)="logout()" id="logout">
-              <fa-icon icon="sign-out-alt" fixedWidth="true"></fa-icon>
-              <span>Sign out</span>
-            </a>
-          </li>
-          <li *ngSwitchCase="false">
-            <a class="dropdown-item" (click)="login()" id="login">
-              <fa-icon icon="sign-in-alt" fixedWidth="true"></fa-icon>
-              <span>Sign in</span>
-            </a>
-          </li>
-          <li *ngSwitchCase="false">
-            <a class="dropdown-item" routerLink="register" routerLinkActive="active" (click)="collapseNavbar()">
-              <fa-icon icon="user-plus" fixedWidth="true"></fa-icon>
-              <span>Register</span>
-            </a>
-          </li>
-        </ul>
+      </li>
+      <li *ngSwitchCase="true" routerLinkActive="active" class="nav-item">
+        <a
+          *jhiLacksAuthority="'ROLE_RECKLESS'"
+          class="nav-link"
+          routerLink="password"
+          routerLinkActive="active"
+          (click)="collapseNavbar()"
+        >
+          <fa-icon icon="lock" fixedWidth="true"></fa-icon>
+          <span>Password</span>
+        </a>
+      </li>
+      <li *ngSwitchCase="true" routerLinkActive="active" class="nav-item">
+        <a class="nav-link" (click)="logout()" id="logout">
+          <fa-icon icon="sign-out-alt" fixedWidth="true"></fa-icon>
+          <span>Sign out</span>
+        </a>
+      </li>
+      <li *ngSwitchCase="false" routerLinkActive="active" class="nav-item">
+        <a class="nav-link" (click)="login()" id="login">
+          <fa-icon icon="sign-in-alt" fixedWidth="true"></fa-icon>
+          <span>Sign in</span>
+        </a>
+      </li>
+      <li *ngSwitchCase="false" routerLinkActive="active" class="nav-item">
+        <a class="nav-link" routerLink="register" routerLinkActive="active" (click)="collapseNavbar()">
+          <fa-icon icon="user-plus" fixedWidth="true"></fa-icon>
+          <span>Register</span>
+        </a>
       </li>
     </ul>
   </div>
