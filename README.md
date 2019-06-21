@@ -1,3 +1,7 @@
+# Ice Dragon
+
+This project has been generated with JHipster. For more details, see [README-jhipster.md](README-jhipster.md).
+
 # Persistent development DB
 
 For the default icedragon-db:

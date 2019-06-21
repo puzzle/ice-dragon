@@ -1,0 +1,460 @@
+kind: Template
+apiVersion: v1
+metadata:
+  name: ${METADATA_LABELS_TEMPLATE}
+  annotations:
+    iconClass: icon-java
+    tags: java,microservice,icedragon
+objects:
+  ###############
+  ## Generic image streams
+  ###############
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: ice-dragon
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - from:
+            kind: DockerImage
+            name: guggero/icedragon:latest
+          generation: 2
+          importPolicy:
+            scheduled: true
+          name: latest
+          referencePolicy:
+            type: Source
+
+
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: nginx
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - from:
+            kind: DockerImage
+            name: nginx:alpine
+          generation: 2
+          importPolicy: {}
+          name: nginx
+          referencePolicy:
+            type: Source
+
+
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: postgresql
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - from:
+            kind: DockerImage
+            name: ${POSTGRESQL_IMAGE}
+          generation: 2
+          importPolicy: {}
+          name: latest
+          referencePolicy:
+            type: Source
+
+  ###############
+  ## PostgreSQL
+  ###############
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: ${DATABASE_SERVICE_NAME}
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: ${POSTGRESQL_VOLUME_CAPACITY}
+
+
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: ${DATABASE_SERVICE_NAME}
+    spec:
+      replicas: 1
+      selector:
+        name: ${DATABASE_SERVICE_NAME}
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          labels:
+            name: ${DATABASE_SERVICE_NAME}
+        spec:
+          containers:
+            - name: ${DATABASE_SERVICE_NAME}
+              env:
+                - name: POSTGRES_USER
+                  value: ${POSTGRESQL_USER}
+                - name: POSTGRES_PASSWORD
+                  value: ${POSTGRESQL_PASSWORD}
+                - name: POSTGRES_DB
+                  value: ${POSTGRESQL_DATABASE_NAME}
+                - name: PGCTLTIMEOUT
+                  value: "300"
+                - name: TZ
+                  value: ${TIMEZONE}
+                - name: PGDATA
+                  value: /var/lib/postgresql/data/${POSTGRESQL_DATABASE_NAME}
+              image: ${POSTGRESQL_IMAGE}
+              imagePullPolicy: IfNotPresent
+              livenessProbe:
+                initialDelaySeconds: 300
+                tcpSocket:
+                  port: 5432
+                timeoutSeconds: 1
+              ports:
+                - containerPort: 5432
+                  protocol: TCP
+              readinessProbe:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -i
+                    - -c
+                    - psql -h 127.0.0.1 -U $POSTGRES_USER -q -d $POSTGRES_DB -c 'SELECT 1'
+                initialDelaySeconds: 5
+                timeoutSeconds: 1
+              resources:
+                limits:
+                  cpu: ${POSTGRESQL_CPU_LIMIT}
+                  memory: ${POSTGRESQL_MEMORY_LIMIT}
+                requests:
+                  cpu: ${POSTGRESQL_CPU_REQUEST}
+                  memory: ${POSTGRESQL_MEMORY_REQUEST}
+              securityContext:
+                capabilities: {}
+                privileged: false
+              terminationMessagePath: /dev/termination-log
+              volumeMounts:
+                - mountPath: /var/lib/postgresql/data
+                  name: ${DATABASE_SERVICE_NAME}-data
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          volumes:
+            - name: ${DATABASE_SERVICE_NAME}-data
+              persistentVolumeClaim:
+                claimName: ${DATABASE_SERVICE_NAME}
+      triggers:
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${DATABASE_SERVICE_NAME}
+            from:
+              kind: ImageStreamTag
+              name: postgresql:latest
+          type: ImageChange
+        - type: ConfigChange
+
+
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: ${DATABASE_SERVICE_NAME}
+    spec:
+      ports:
+        - name: postgresql
+          port: 5432
+          protocol: TCP
+          targetPort: 5432
+      selector:
+        name: ${DATABASE_SERVICE_NAME}
+      sessionAffinity: None
+      type: ClusterIP
+
+  ###############
+  ## Ice Dragon application
+  ###############
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: ice-dragon
+    spec:
+      replicas: 1
+      selector:
+        deploymentConfig: ice-dragon
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          labels:
+            application: ${METADATA_LABELS_APPLICATION}
+            deploymentConfig: ice-dragon
+          name: ice-dragon
+        spec:
+          containers:
+            - env:
+                # Spring
+                - name: SPRING_PROFILES_ACTIVE
+                  value: ${SPRING_PROFILES_ACTIVE}
+                - name: SPRING_DATASOURCE_URL
+                  value: jdbc:postgresql://${DATABASE_SERVICE_NAME}:5432/${POSTGRESQL_DATABASE_NAME}
+                - name: SPRING_DATASOURCE_USERNAME
+                  value: ${POSTGRESQL_USER}
+                - name: SPRING_DATASOURCE_PASSWORD
+                  value: ${POSTGRESQL_PASSWORD}
+                - name: SPRING_MAIL_HOST
+                  value: ${SPRING_MAIL_HOST}
+                - name: SPRING_MAIL_PORT
+                  value: ${SPRING_MAIL_PORT}
+                # JHipster
+                - name: JHIPSTER_MAIL_FROM
+                  value: ${JHIPSTER_MAIL_FROM}
+                - name: JHIPSTER_MAIL_BASE_URL
+                  value: ${JHIPSTER_MAIL_BASE_URL}
+                - name: JHIPSTER_CORS_ALLOWED_ORIGINS
+                  value: ${JHIPSTER_CORS_ALLOWED_ORIGINS}
+              image: ice-dragon
+              imagePullPolicy: Always
+              livenessProbe:
+                failureThreshold: 5
+                httpGet:
+                  path: /management/health
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 60
+                periodSeconds: 20
+                successThreshold: 1
+                timeoutSeconds: 15
+              readinessProbe:
+                failureThreshold: 5
+                httpGet:
+                  path: /management/health
+                  port: 8080
+                  scheme: HTTP
+                initialDelaySeconds: 60
+                periodSeconds: 20
+                successThreshold: 1
+                timeoutSeconds: 15
+              name: ice-dragon
+              ports:
+                - containerPort: 8080
+                  name: http
+                  protocol: TCP
+              resources:
+                limits:
+                  cpu: ${JAVA_CPU_LIMIT}
+                  memory: ${JAVA_MEMORY_LIMIT}
+                requests:
+                  cpu: ${JAVA_CPU_REQUEST}
+                  memory: ${JAVA_MEMORY_REQUEST}
+              terminationMessagePath: /dev/termination-log
+      triggers:
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - ice-dragon
+            from:
+              kind: ImageStreamTag
+              name: ice-dragon:latest
+          type: ImageChange
+
+
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        service.alpha.openshift.io/dependencies: '[{"name":"${DATABASE_SERVICE_NAME}","namespace":"","kind":"Service"}]'
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: ice-dragon
+    spec:
+      ports:
+        - name: ice-dragon-http
+          port: 8080
+          protocol: TCP
+          targetPort: 8080
+      selector:
+        deploymentConfig: ice-dragon
+      sessionAffinity: None
+      type: ClusterIP
+
+  - apiVersion: v1
+    kind: Route
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: ice-dragon-https-route
+    spec:
+      host: ${ROUTE_HOST}
+      path: /
+      tls:
+        caCertificate: null
+        certificate: null
+        insecureEdgeTerminationPolicy: ${ROUTE_INSECURE_TRAFFIC}
+        key: null
+        termination: edge
+      to:
+        kind: Service
+        name: ice-dragon
+
+parameters:
+  ###############################################
+  ### Metadata
+  ###############################################
+  - name: METADATA_LABELS_APPLICATION
+    value: icedragon
+
+  - name: METADATA_LABELS_TEMPLATE
+    value: icedragon-application-template
+
+  - name: TIMEZONE
+    value: Europe/Zurich
+
+  ###############################################
+  ### Routes
+  ###############################################
+  - name: ROUTE_HOST
+    description: The exposed hostname that will route to the icedragon service. Must be set.
+
+  - name: ROUTE_INSECURE_TRAFFIC
+    description: Policy what should happen with insecure traffic on the HTTPS route.
+      Possible values are Allow, Redirect, None
+    value: Redirect
+
+  ###############################################
+  ### Resource limits
+  ###############################################
+  # Java
+  - name: JAVA_MEMORY_REQUEST
+    displayName: Memory request for Java based containers
+    description: Minimum amount of memory the container requests
+    value: 128Mi
+
+  - name: JAVA_MEMORY_LIMIT
+    displayName: Memory limit for Java based containers
+    description: Maximum amount of memory the container can use.
+    value: 1Gi
+
+  - name: JAVA_CPU_REQUEST
+    displayName: CPU request for Java based containers
+    description: Minimum amount of CPU the container requests
+    value: 200m
+
+  - name: JAVA_CPU_LIMIT
+    displayName: CPU limit for Java based containers
+    description: Maximum amount of CPU the container can use.
+    value: "1"
+
+  - name: JAVA_VOLUME_CAPACITY
+    displayName: Volume Capacity
+    description: Volume space available for data, e.g. 512Mi, 2Gi.
+    value: 1G
+
+  # PostgreSQL
+  - name: POSTGRESQL_MEMORY_REQUEST
+    displayName: Memory request for PostgreSQL containers
+    description: Minimum amount of memory the container requests
+    value: 128Mi
+
+  - name: POSTGRESQL_MEMORY_LIMIT
+    displayName: Memory limit for PostgreSQL containers.
+    description: Maximum amount of memory the container can use.
+    value: 1Gi
+
+  - name: POSTGRESQL_CPU_REQUEST
+    displayName: CPU request for PostgreSQL containers
+    description: Minimum amount of CPU the container requests
+    value: 250m
+
+  - name: POSTGRESQL_CPU_LIMIT
+    displayName: CPU limit for PostgreSQL containers.
+    description: Maximum amount of CPU the container can use.
+    value: 500m
+
+  - name: POSTGRESQL_VOLUME_CAPACITY
+    displayName: Volume Capacity
+    description: Volume space available for data, e.g. 512Mi, 2Gi.
+    value: 1G
+
+  ###############################################
+  ### Database
+  ###############################################
+  - name: DATABASE_SERVICE_NAME
+    description: Database service name
+    value: postgresql
+
+  - name: POSTGRESQL_DATABASE_NAME
+    description: Database name
+    value: icedragon
+
+  - name: POSTGRESQL_IMAGE
+    displayName: PostgreSQL image
+    description: The PostgreSQL image name / Container image to be used.
+    value: postgres:11.2
+
+  - name: POSTGRESQL_USER
+    description: Database user name
+    value: icedragon
+
+  - name: POSTGRESQL_PASSWORD
+    description: Database user password
+    generate: expression
+    from: "[a-zA-Z0-9]{16}"
+
+  - name: SPRING_PROFILES_ACTIVE
+    description: Spring profiles that should be active by default
+    value: prod,swagger
+
+  - name: SPRING_MAIL_HOST
+    description: Hostname of the email mta
+    value: localhost
+
+  - name: SPRING_MAIL_PORT
+    description: Port number of the email mta
+    value: "25"
+
+  - name: SPRING_LIQUIBASE_DROP_FIRST
+    description: Specify, if DB shall be dropped on start up
+    value: "false"
+
+  - name: SPRING_LIQUIBASE_CONTEXTS
+    description: The contexts that Liquibase should use
+    value: dev
+
+  - name: JHIPSTER_MAIL_FROM
+    description: Default sender address for generated e-mails
+    value: ""
+
+  - name: JHIPSTER_MAIL_BASE_URL
+    description: The base-URL under which the front end is reachable (expl. www.example.com:3000/app)
+    value: http://localhost:4200
+
+  - name: JHIPSTER_CORS_ALLOWED_ORIGINS
+    description: Set it to non-empty when CORS should be allowed
+    value: ""
