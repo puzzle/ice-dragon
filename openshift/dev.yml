@@ -1,4 +1,5 @@
 ROUTE_HOST: ice-dragon.ose3.puzzle.ch
+ROUTE_HOST_CONTENT_DEMO: ice-dragon-content-demo.ose3.puzzle.ch
 JHIPSTER_MAIL_BASE_URL: 'https://ice-dragon.ose3.puzzle.ch'
 JHIPSTER_MAIL_FROM: 'lightning@puzzle.ch'
 JHIPSTER_CORS_ALLOWED_ORIGINS: ''

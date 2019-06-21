@@ -37,17 +37,18 @@ objects:
       labels:
         application: ${METADATA_LABELS_APPLICATION}
         template: ${METADATA_LABELS_TEMPLATE}
-      name: nginx
+      name: ice-dragon-content-demo
     spec:
       lookupPolicy:
         local: false
       tags:
         - from:
             kind: DockerImage
-            name: nginx:alpine
+            name: guggero/icedragon-content-demo:latest
           generation: 2
-          importPolicy: {}
-          name: nginx
+          importPolicy:
+            scheduled: true
+          name: latest
           referencePolicy:
             type: Source
 
@@ -332,6 +333,88 @@ objects:
         kind: Service
         name: ice-dragon
 
+  ###############
+  ## Ice Dragon content demo
+  ###############
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: ice-dragon-content-demo
+    spec:
+      replicas: 1
+      selector:
+        deploymentConfig: ice-dragon-content-demo
+      strategy:
+        type: Recreate
+      template:
+        metadata:
+          labels:
+            application: ${METADATA_LABELS_APPLICATION}
+            deploymentConfig: ice-dragon-content-demo
+          name: ice-dragon-content-demo
+        spec:
+          containers:
+            - name: ice-dragon-content-demo
+              image: ice-dragon-content-demo
+              imagePullPolicy: Always
+              ports:
+                - containerPort: 8080
+                  name: http
+                  protocol: TCP
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+      triggers:
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - ice-dragon-content-demo
+            from:
+              kind: ImageStreamTag
+              name: ice-dragon-content-demo:latest
+          type: ImageChange
+
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: ice-dragon-content-demo
+    spec:
+      ports:
+        - name: ice-dragon-content-demo-http
+          port: 8080
+          protocol: TCP
+          targetPort: 8080
+      selector:
+        deploymentConfig: ice-dragon-content-demo
+      sessionAffinity: None
+      type: ClusterIP
+
+  - apiVersion: v1
+    kind: Route
+    metadata:
+      labels:
+        application: ${METADATA_LABELS_APPLICATION}
+        template: ${METADATA_LABELS_TEMPLATE}
+      name: ice-dragon-content-demo-https-route
+    spec:
+      host: ${ROUTE_HOST_CONTENT_DEMO}
+      path: /
+      tls:
+        caCertificate: null
+        certificate: null
+        insecureEdgeTerminationPolicy: ${ROUTE_INSECURE_TRAFFIC}
+        key: null
+        termination: edge
+      to:
+        kind: Service
+        name: ice-dragon-content-demo
+
+
 parameters:
   ###############################################
   ### Metadata
@@ -350,6 +433,9 @@ parameters:
   ###############################################
   - name: ROUTE_HOST
     description: The exposed hostname that will route to the icedragon service. Must be set.
+
+  - name: ROUTE_HOST_CONTENT_DEMO
+    description: The exposed hostname that will route to the icedragon content demo service. Must be set.
 
   - name: ROUTE_INSECURE_TRAFFIC
     description: Policy what should happen with insecure traffic on the HTTPS route.
