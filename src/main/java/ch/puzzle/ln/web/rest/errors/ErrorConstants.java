@@ -14,6 +14,8 @@ public final class ErrorConstants {
     public static final URI EMAIL_ALREADY_USED_TYPE = URI.create(PROBLEM_BASE_URL + "/email-already-used");
     public static final URI LOGIN_ALREADY_USED_TYPE = URI.create(PROBLEM_BASE_URL + "/login-already-used");
     public static final URI EMAIL_NOT_FOUND_TYPE = URI.create(PROBLEM_BASE_URL + "/email-not-found");
+    public static final URI PLATFORM_NAME_EXISTS_TYPE = URI.create(PROBLEM_BASE_URL + "/platform-name-exists");
+    public static final URI PLATFORM_URL_EXISTS_TYPE = URI.create(PROBLEM_BASE_URL + "/platform-url-exists");
 
     private ErrorConstants() {
     }

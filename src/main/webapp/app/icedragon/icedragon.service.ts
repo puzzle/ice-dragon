@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
+import { Platform } from 'app/icedragon/platform';
 
 @Injectable({ providedIn: 'root' })
 export class IcedragonService {
@@ -14,5 +15,9 @@ export class IcedragonService {
 
   loginReckless(pubKey: string, signature: string): Observable<any> {
     return this.http.post(SERVER_API_URL + 'api/recklessuser/login', { nodePublicKey: pubKey, challengeResponse: signature });
+  }
+
+  addPlatform(platform: Platform): Observable<void> {
+    return this.http.post<void>(SERVER_API_URL + 'api/platform', platform);
   }
 }

@@ -41,13 +41,10 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    private final CacheManager cacheManager;
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
-        this.cacheManager = cacheManager;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -57,7 +54,6 @@ public class UserService {
                 // activate given user for the registration key.
                 user.setActivated(true);
                 user.setActivationKey(null);
-                this.clearUserCaches(user);
                 log.debug("Activated user: {}", user);
                 return user;
             });
@@ -71,7 +67,6 @@ public class UserService {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
                 user.setResetDate(null);
-                this.clearUserCaches(user);
                 return user;
             });
     }
@@ -82,7 +77,6 @@ public class UserService {
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
                 user.setResetDate(Instant.now());
-                this.clearUserCaches(user);
                 return user;
             });
     }
@@ -118,7 +112,6 @@ public class UserService {
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
-        this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
@@ -129,7 +122,6 @@ public class UserService {
         }
         userRepository.delete(existingUser);
         userRepository.flush();
-        this.clearUserCaches(existingUser);
         return true;
     }
 
@@ -159,7 +151,6 @@ public class UserService {
             user.setAuthorities(authorities);
         }
         userRepository.save(user);
-        this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
         return user;
     }
@@ -182,7 +173,6 @@ public class UserService {
                 user.setEmail(email.toLowerCase());
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
-                this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
             });
     }
@@ -199,7 +189,6 @@ public class UserService {
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(user -> {
-                this.clearUserCaches(user);
                 user.setLogin(userDTO.getLogin().toLowerCase());
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
@@ -214,7 +203,6 @@ public class UserService {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
-                this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
                 return user;
             })
@@ -224,7 +212,6 @@ public class UserService {
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
             userRepository.delete(user);
-            this.clearUserCaches(user);
             log.debug("Deleted User: {}", user);
         });
     }
@@ -239,7 +226,6 @@ public class UserService {
                 }
                 String encryptedPassword = passwordEncoder.encode(newPassword);
                 user.setPassword(encryptedPassword);
-                this.clearUserCaches(user);
                 log.debug("Changed password for User: {}", user);
             });
     }
@@ -276,7 +262,6 @@ public class UserService {
             .forEach(user -> {
                 log.debug("Deleting not activated user {}", user.getLogin());
                 userRepository.delete(user);
-                this.clearUserCaches(user);
             });
     }
 
@@ -286,11 +271,5 @@ public class UserService {
      */
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
-    }
-
-
-    private void clearUserCaches(User user) {
-        Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE)).evict(user.getLogin());
-        Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
     }
 }

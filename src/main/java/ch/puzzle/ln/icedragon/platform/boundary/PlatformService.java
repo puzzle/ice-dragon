@@ -26,19 +26,18 @@ import static ch.puzzle.ln.ConvertUtil.bytesToHex;
 @Component
 public class PlatformService {
 
-
     private final SubscriptionRepository subscriptionRepository;
     private final PlatformRepository platformRepository;
     private final LndService lndService;
     private final UserRepository userRepository;
 
-    public PlatformService(SubscriptionRepository subscriptionRepository, PlatformRepository platformRepository, LndService lndService, UserRepository userRepository) {
+    public PlatformService(SubscriptionRepository subscriptionRepository, PlatformRepository platformRepository,
+                           LndService lndService, UserRepository userRepository) {
         this.subscriptionRepository = subscriptionRepository;
         this.platformRepository = platformRepository;
         this.lndService = lndService;
         this.userRepository = userRepository;
     }
-
 
     public Subscription requestSubscription(String currentUserLogin, Long platformId, SubscriptionRequest subscriptionRequest) throws StatusException, IOException, ValidationException {
         Platform platform = platformRepository.findById(platformId)
@@ -61,7 +60,6 @@ public class PlatformService {
         return newSubscription;
     }
 
-
     private long getPriceInSatoshi(Platform price, long subscriptionDuration) {
         return price.getAmountPerHour() * subscriptionDuration;
     }
@@ -82,10 +80,11 @@ public class PlatformService {
         platform.setOwner(currentUser);
         platform.setName(platformRequest.getName());
         platform.setAmountPerHour(platformRequest.getAmountPerHour());
+        platform.setContentUrl(platformRequest.getContentUrl());
+        platform.setServiceUrl(platformRequest.getServiceUrl());
         platformRepository.saveAndFlush(platform);
         return platform;
     }
-
 
     public Platform findPlatform(Long platformId) {
         return platformRepository.findById(platformId)

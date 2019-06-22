@@ -3,10 +3,10 @@ package ch.puzzle.ln.icedragon.platform.entity;
 import ch.puzzle.ln.domain.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.security.Key;
 
 @Entity
 public class Platform {
@@ -23,7 +23,8 @@ public class Platform {
     @Size(min = 1, max = 255)
     @Column(length = 255, unique = true, nullable = false)
     private String name;
-    @Min(0)
+    @Min(1)
+    @Max(100000000)
     @NotNull
     @Column(nullable = false)
     private Long amountPerHour;
@@ -70,6 +71,22 @@ public class Platform {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getServiceUrl() {
+        return serviceUrl;
+    }
+
+    public void setServiceUrl(String serviceUrl) {
+        this.serviceUrl = serviceUrl;
+    }
+
+    public String getContentUrl() {
+        return contentUrl;
+    }
+
+    public void setContentUrl(String contentUrl) {
+        this.contentUrl = contentUrl;
     }
 
     public void setPaymentConfirmationSecret(String paymentConfirmationSecret) {

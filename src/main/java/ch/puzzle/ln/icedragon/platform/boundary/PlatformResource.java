@@ -11,6 +11,7 @@ import org.lightningj.lnd.wrapper.StatusException;
 import org.lightningj.lnd.wrapper.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -43,12 +44,21 @@ public class PlatformResource {
     @PostMapping
     public ResponseEntity<Void> createPlatform(@RequestBody PlatformRequest platformRequest) {
         String currentUserLogin = SecurityUtils.getCurrentUserLogin().orElseThrow();
-        Platform platform = platformService.createPlatform(currentUserLogin, platformRequest);
-        return ResponseEntity
-            .created(UriComponentsBuilder.fromUriString("/api/platform/{id}").build(platform.getId()))
-            .build();
+        try {
+            Platform platform = platformService.createPlatform(currentUserLogin, platformRequest);
+            return ResponseEntity
+                .created(UriComponentsBuilder.fromUriString("/api/platform/{id}").build(platform.getId()))
+                .build();
+        } catch (DataIntegrityViolationException e) {
+            if (e.getMessage() != null && e.getMessage().contains("ux_platform_name")) {
+                throw new NameAlreadyExists();
+            } else if (e.getMessage() != null &&
+                (e.getMessage().contains("ux_platform_service_url") || e.getMessage().contains("ux_platform_content_url"))) {
+                throw new UrlAlreadyExists();
+            }
+            throw e;
+        }
     }
-
 
     @GetMapping(path = "{id}")
     public Platform findPlatform(@PathVariable("id") Long platformId) {
