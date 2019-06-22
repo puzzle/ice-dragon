@@ -23,6 +23,7 @@ import java.util.Optional;
 import static ch.puzzle.ln.ConvertUtil.bytesToHex;
 
 @Component
+@Transactional
 public class PlatformService {
 
     private final SubscriptionRepository subscriptionRepository;
@@ -47,7 +48,6 @@ public class PlatformService {
         return requestSubscription(currentUser, platform, subscriptionRequest.getDuration());
     }
 
-    @Transactional
     Subscription requestSubscription(User subscriber, Platform platform, long subscriptionDuration) throws ValidationException, IOException, StatusException {
 
         Subscription newSubscription = getSubscription(subscriber, platform, subscriptionDuration);

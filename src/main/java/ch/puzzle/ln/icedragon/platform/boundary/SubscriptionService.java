@@ -38,17 +38,18 @@ public class SubscriptionService implements InvoiceHandler {
 
     public void handleInvoiceUpdated(String hashHex, org.lightningj.lnd.wrapper.message.Invoice invoice) {
         subscriptionRepository.findByPaymentHash(hashHex)
-            .ifPresent(subscription -> {
-                if (invoice.getSettled() && subscription.getPreImage() == null) {
-                    subscription.setValidFrom(unixTimestampToInstant(invoice.getSettleDate()));
-                    subscription.setPreImage(bytesToHex(invoice.getRPreimage()));
-                    subscription.getPlatform().earnSatoshis(invoice.getAmtPaidSat());
-                    platformRepository.saveAndFlush(subscription.getPlatform());
-                }
-                LOG.debug("Received update for subscriber {} on subscription {}.", subscription.getSubscriber().getLogin(),
-                    subscription.getPaymentHash());
-                subscriptionRepository.saveAndFlush(subscription);
-                eventPublisher.publishEvent(new SubscriptionEvent(this, subscription));
-            });
+            .ifPresentOrElse(subscription -> {
+                    if (invoice.getSettled() && subscription.getPreImage() == null) {
+                        subscription.setValidFrom(unixTimestampToInstant(invoice.getSettleDate()));
+                        subscription.setPreImage(bytesToHex(invoice.getRPreimage()));
+                        subscription.getPlatform().earnSatoshis(invoice.getAmtPaidSat());
+                        platformRepository.saveAndFlush(subscription.getPlatform());
+                    }
+                    LOG.debug("Received update for subscriber {} on subscription {}.", subscription.getSubscriber().getLogin(),
+                        subscription.getPaymentHash());
+                    subscriptionRepository.saveAndFlush(subscription);
+                    eventPublisher.publishEvent(new SubscriptionEvent(this, subscription));
+                },
+                () -> LOG.debug("No subscription found for hash {}.", hashHex));
     }
 }
