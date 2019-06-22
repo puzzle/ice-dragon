@@ -128,7 +128,7 @@
             <h5 class="mb-1">{{ platform.name }}</h5>
             <small>{{ platform.amountPerHour }} sat/hour</small>
           </div>
-          <p class="mb-1" *ngIf="hasSubscription(platform)">
+          <p class="mb-1" *ngIf="!hasSubscription(platform)">
             <a [href]="platform.contentUrl">{{ platform.contentUrl }}</a>
           </p>
         </div>

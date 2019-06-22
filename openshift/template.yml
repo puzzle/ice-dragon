@@ -361,7 +361,10 @@ objects:
           name: ice-dragon-content-demo
         spec:
           containers:
-            - name: ice-dragon-content-demo
+            - env:
+                - name: SECRET
+                  value: ${CONTENT_DEMO_SECRET}
+              name: ice-dragon-content-demo
               image: ice-dragon-content-demo
               imagePullPolicy: Always
               ports:
@@ -572,4 +575,8 @@ parameters:
 
   - name: APPLICATION_LND_READONLY_MACAROON_HEX
     description: Readonly macaroon serialized in hex
+    value: ""
+
+  - name: CONTENT_DEMO_SECRET
+    description: Secret for the dragons-nest.php of the demo application
     value: ""

@@ -13,3 +13,4 @@ APPLICATION_LND_HOST: not-commited-to-git-entered-manually-on-platform
 APPLICATION_LND_PORT: 10009
 APPLICATION_LND_INVOICE_MACAROON_HEX: not-commited-to-git-entered-manually-on-platform
 APPLICATION_LND_READONLY_MACAROON_HEX: not-commited-to-git-entered-manually-on-platform
+CONTENT_DEMO_SECRET: ff34ccc7-1c1a-4286-8fb3-c7c9faa4a2dbb63538c6-3a54-40f7-930a-1313003ee75c

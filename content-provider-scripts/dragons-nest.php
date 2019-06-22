@@ -399,8 +399,8 @@ $GLOBALS['hmacAlgorithm'] = 'HS512';
 
 // dummy data for debugging
 if($GLOBALS['debugMode']) {
-    $_GET['voucher'] = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTYXRvc2hpIE5ha2Ftb3RvIiwiZXhwIjoxNTYxMzExNTYwfQ.hoBftvQSJs_NCyk4t0QCVMgE0r_jichqcAvt3YoulwEvYOcPUXO5YGfra4nlGxN5uinvapbHkighriEr5KIyaA';
-    $GLOBALS['paymentConfirmationSecret'] = "your-512-bit-secret_lorem_ipsum_sit_doler_amet";
+    $_GET['voucher'] = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIwMzIyZDgxYzkzZjBmZmU1OTNiYWU2MTAyZTJhMGZkMzhjZmNhZWE4MDllODA2MWQ5YWM2NmIwNDQyOWYyNThkMTQiLCJleHAiOjE1NjEyMjI0NjN9.FGGv5smqLCYhEDqy1yaDNJyxbtITZDieioC4ycVQvKzE7HDraHslTDyDXEoOvAIdFaTIPAtD-aUj5s3Sy9Hx5g';
+    $GLOBALS['paymentConfirmationSecret'] = "f143b7b9-f032-4847-a789-41f77c71ce9fb95fba76-5966-4bc7-9f28-37c67c5bded0cf70813d-fa0b-47d3-ad70-1423627d4867f2b58d8e-df84-41bd-b293-1bb3dd7057ea";
 }
 
 if(isset($_GET['voucher'])) {

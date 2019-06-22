@@ -391,19 +391,12 @@ class JWT
 
 // == creating cookie script ==
 
-$GLOBALS['debugMode'] = true;
-
 // This key is very sensitive!! Do not change it nor share it with anyone!
-$GLOBALS['paymentConfirmationSecret'] = "PAYMENT_CONFIRMATION_SECRET_PLACEHOLDER";
+$GLOBALS['paymentConfirmationSecret'] = $_ENV["SECRET"];
 $GLOBALS['hmacAlgorithm'] = 'HS512';
 
-// dummy data for debugging
-if($GLOBALS['debugMode']) {
-    $_GET['voucher'] = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJTYXRvc2hpIE5ha2Ftb3RvIiwiZXhwIjoxNTYxMzExNTYwfQ.hoBftvQSJs_NCyk4t0QCVMgE0r_jichqcAvt3YoulwEvYOcPUXO5YGfra4nlGxN5uinvapbHkighriEr5KIyaA';
-    $GLOBALS['paymentConfirmationSecret'] = "your-512-bit-secret_lorem_ipsum_sit_doler_amet";
-}
-
 if(isset($_GET['voucher'])) {
+    echo $_ENV["SECRET"];
     $payload = verifyVoucher($_GET['voucher']);
     setcookie("ICE_DRAGON", $_GET['voucher'], $payload['exp']);
     echo "success";

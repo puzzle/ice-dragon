@@ -94,5 +94,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   hasSubscription(platform: Platform) {
     if (this.platforms && this.account && this.account.subscriptions) {
     }
+    return false;
   }
 }

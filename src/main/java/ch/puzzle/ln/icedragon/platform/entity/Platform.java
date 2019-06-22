@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
+import static java.util.UUID.randomUUID;
+
 @Entity
 public class Platform {
 
@@ -49,7 +51,7 @@ public class Platform {
     private Long payedOutSatoshis = 0L;
 
     public Platform() {
-        this.paymentConfirmationSecret = UUID.randomUUID().toString() + UUID.randomUUID().toString();
+        this.paymentConfirmationSecret = "" + randomUUID() + randomUUID() + randomUUID() + randomUUID();
     }
 
     public Long getId() {

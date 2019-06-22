@@ -23,6 +23,8 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
+import static io.jsonwebtoken.SignatureAlgorithm.HS512;
+
 @RestController
 @RequestMapping("/api/platform")
 public class PlatformResource {
@@ -105,14 +107,13 @@ public class PlatformResource {
     private String createToken(Subscription subscription) {
         return Jwts.builder()
             .setSubject(subscription.getSubscriber().getLogin())
+            .signWith(getKey(subscription.getPlatform().getPaymentConfirmationSecret()), HS512)
             .setExpiration(Date.from(subscription.getExpiration()))
-            .signWith(getKey(subscription.getPlatform().getPaymentConfirmationSecret())).compact();
+            .compact();
     }
 
     private Key getKey(String paymentConfirmationSecret) {
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
-
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(paymentConfirmationSecret);
-        return new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+        return new SecretKeySpec(apiKeySecretBytes, HS512.getJcaName());
     }
 }
