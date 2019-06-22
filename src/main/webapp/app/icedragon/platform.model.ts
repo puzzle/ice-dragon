@@ -8,4 +8,5 @@ export interface Platform {
   earnedSatoshis: number;
   payedOutSatoshis: number;
   invoice?: string;
+  paymentConfirmationSecret?: string;
 }

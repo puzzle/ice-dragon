@@ -1,67 +1,90 @@
 <div>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1>My Subscriptions Overview</h1>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1>Subscriptions overview</h1>
+      Here you see a list of all your subscriptions.
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="list-group">
+        <div
+          *ngFor="let subscription of subscriptions"
+          tabindex="-1"
+          class="list-group-item list-group-item-action flex-column align-items-start"
+        >
+          <div class="d-flex w-100 justify-content-between">
+            <h3 class="mb-1" style="width: 60%;">{{ subscription.platform.name }}</h3>
+            <small style="width: 20%;">{{ subscription.platform.amountPerHour }} sat/hour</small>
+            <small style="width: 20%;">{{ subscription.duration }} hour(s)</small>
+          </div>
+          <p class="mb-1">
+            <a [href]="subscription.platform.contentUrl">{{ subscription.platform.contentUrl }}</a>
+          </p>
         </div>
+        <div *ngIf="!subscriptions || subscriptions.length === 0">
+          <i>You don't have any subscriptions yet.</i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="platforms && platforms.length > 0">
+    <br /><br />
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <h1>Your registered content platforms</h1>
+      </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="list-group">
-                <div
-                    *ngFor="let subscription of subscriptions"
-                    tabindex="-1"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h3 class="mb-1">{{ subscription.platform.name }}</h3>
-                        <small>{{ subscription.platform.amountPerHour }} sat/hour</small>
-                        <small>{{ subscription.duration }} hour</small>
-                    </div>
-                </div>
+      <div class="col-md-8">
+        <div class="list-group">
+          <div *ngFor="let platform of platforms" tabindex="-1" class="list-group-item flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+              <h2 class="mb-1">
+                <strong>{{ platform.name }}</strong>
+              </h2>
             </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1>My Platforms Overview</h1>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="list-group">
-                <div
-                    *ngFor="let platform of platforms"
-                    tabindex="-1"
-                    class="list-group-item flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h2 class="mb-1"><strong>{{ platform.name }}</strong></h2>
-                    </div>
-                    <div class="d-flex w-100 justify-content-between">
-                        <p>You earned <strong>{{ platform.earnedSatoshis }} sats</strong> and redeemed
-                            <strong>{{platform.payedOutSatoshis}} sats</strong>, your platform costs
-                            <strong>{{ platform.amountPerHour }} sat/h</strong>.</p>
-                    </div>
-                    <div *ngIf="platform.earnedSatoshis - platform.payedOutSatoshis > 0 && platform.redeeming !== true">
-                        <div class="d-flex w-100 justify-content-between">
-                            <p>To redeem your <strong>{{ platform.earnedSatoshis - platform.payedOutSatoshis }}
-                                sats</strong>, enter an invoice for that amount.</p>
-                        </div>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" [(ngModel)]="platform.invoice" aria-label="Default"
-                                   aria-describedby="inputGroup-sizing-default">
-                            <div class="input-group-append">
-                                <button class="input-group-text" (click)="redeemSatoshis(platform)"
-                                        id="inputGroup-sizing-default">Redeeem
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="platform.redeeming === true">
-                        <div class="d-flex w-100 justify-content-between">
-                            <p>Redeeming</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="d-flex w-100 justify-content-between">
+              <p>
+                You earned <strong>{{ platform.earnedSatoshis }} sats</strong> and redeemed
+                <strong>{{ platform.payedOutSatoshis }} sats</strong>, your content costs
+                <strong>{{ platform.amountPerHour }} sat/h</strong>.
+              </p>
             </div>
+            <div *ngIf="platform.earnedSatoshis - platform.payedOutSatoshis > 0 && platform.redeeming !== true">
+              <div class="d-flex w-100 justify-content-between">
+                <p>
+                  To redeem your <strong>{{ platform.earnedSatoshis - platform.payedOutSatoshis }} sats</strong>, enter an invoice for that
+                  amount.
+                </p>
+              </div>
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="platform.invoice"
+                  aria-label="Default"
+                  aria-describedby="inputGroup-sizing-default"
+                />
+                <div class="input-group-append">
+                  <button class="input-group-text" (click)="redeemSatoshis(platform)" id="inputGroup-sizing-default">Redeeem</button>
+                </div>
+              </div>
+              <div class="d-flex w-100">
+                Your payment confirmation secret:
+              </div>
+              <div class="d-flex w-100">
+                <code class="small">{{ platform.paymentConfirmationSecret }}</code>
+              </div>
+            </div>
+            <div *ngIf="platform.redeeming === true">
+              <div class="d-flex w-100 justify-content-between">
+                <p>Redeeming</p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>

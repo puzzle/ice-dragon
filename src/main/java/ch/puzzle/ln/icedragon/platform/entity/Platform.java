@@ -51,7 +51,7 @@ public class Platform {
     private Long payedOutSatoshis = 0L;
 
     public Platform() {
-        this.paymentConfirmationSecret = "" + randomUUID() + randomUUID() + randomUUID() + randomUUID();
+        this.paymentConfirmationSecret = "" + randomUUID() + randomUUID();
     }
 
     public Long getId() {
