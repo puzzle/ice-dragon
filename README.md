@@ -1,5 +1,9 @@
 # Ice Dragon
 
+[For Conent Providers](content-provider-scripts/README.md)
+
+---
+
 This project has been generated with JHipster. For more details, see [README-jhipster.md](README-jhipster.md).
 
 # Persistent development DB
