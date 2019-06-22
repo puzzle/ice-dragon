@@ -25,6 +25,15 @@
           </span>
         </a>
       </li>
+
+        <li class="nav-item" *ngSwitchCase="true" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" routerLink="dashboard" (click)="collapseNavbar()">
+          <span>
+            <fa-icon icon="arrow-alt-circle-up"></fa-icon>
+            <span>Dashboard</span>
+          </span>
+            </a>
+        </li>
       <li class="nav-item" *ngSwitchCase="true" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <a class="nav-link" routerLink="provide" (click)="collapseNavbar()">
           <span>

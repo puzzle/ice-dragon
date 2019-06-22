@@ -16,6 +16,7 @@ import { IcedragonCoreModule } from 'app/core';
 import { IcedragonAppRoutingModule } from './app-routing.module';
 import { IcedragonHomeModule } from './home';
 import { IcedragonProvideModule } from './provide';
+import { IcedragonDashboardModule } from './dashboard';
 import { IcedragonAccountModule } from './account/account.module';
 import { IcedragonEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
@@ -35,6 +36,7 @@ import { JhiMainComponent, NavbarComponent, FooterComponent, PageRibbonComponent
     IcedragonCoreModule,
     IcedragonHomeModule,
     IcedragonProvideModule,
+    IcedragonDashboardModule,
     IcedragonAccountModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     IcedragonEntityModule,

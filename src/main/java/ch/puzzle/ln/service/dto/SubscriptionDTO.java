@@ -10,12 +10,16 @@ public class SubscriptionDTO {
     private Instant validFrom;
     private Long duration;
     private String paymentHash;
+    private Boolean active;
+    private PlatformDTO platform;
 
     public SubscriptionDTO(Subscription subscription) {
         this.platformId = subscription.getPlatform().getId();
         this.validFrom = subscription.getValidFrom();
         this.duration = subscription.getDuration();
+        this.active = subscription.isActive();
         this.paymentHash = subscription.getPaymentHash();
+        this.platform = new PlatformDTO(subscription.getPlatform());
     }
 
     public Long getPlatformId() {
@@ -48,5 +52,21 @@ public class SubscriptionDTO {
 
     public void setPaymentHash(String paymentHash) {
         this.paymentHash = paymentHash;
+    }
+
+    public PlatformDTO getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(PlatformDTO platform) {
+        this.platform = platform;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

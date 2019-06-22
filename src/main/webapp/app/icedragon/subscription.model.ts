@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { Platform } from 'app/icedragon/platform.model';
 
 export interface Subscription {
   id?: number;
@@ -7,6 +8,8 @@ export interface Subscription {
   paymentHash?: string;
   preImage?: string;
   invoiceString?: string;
+  platform?: Platform;
+  active?: boolean;
 }
 
 export function random(arr) {

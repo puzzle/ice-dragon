@@ -1,0 +1,43 @@
+<div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1>Subscriptions overview</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="list-group">
+                <div
+                    *ngFor="let subscription of subscriptions"
+                    tabindex="-1"
+                    class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ subscription.platform.name }}</h5>
+                        <small>{{ subscription.platform.amountPerHour }} sat/hour</small>
+                        <small>{{ subscription.duration }} hour</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1>Platforms overview</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="list-group">
+                <div
+                    *ngFor="let platform of platforms"
+                    tabindex="-1"
+                    class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ platform.name }}</h5>
+                        <small>{{ platform.amountPerHour }} sat/hour</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
