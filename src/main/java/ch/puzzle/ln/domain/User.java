@@ -100,12 +100,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
-
     @OneToMany(mappedBy = "subscriber")
-    private List<Subscription> subscriptions;
+    private Set<Subscription> subscriptions;
 
     @OneToMany(mappedBy = "owner")
-    private List<Platform> platforms;
+    private Set<Platform> platforms;
 
     public Long getId() {
         return id;
@@ -218,19 +217,19 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return Objects.equals(this.password, RECKLESS_USER_PASSWORD_VALUE);
     }
 
-    public List<Subscription> getSubscriptions() {
+    public Set<Subscription> getSubscriptions() {
         return subscriptions;
     }
 
-    public void setSubscriptions(List<Subscription> subscriptions) {
+    public void setSubscriptions(Set<Subscription> subscriptions) {
         this.subscriptions = subscriptions;
     }
 
-    public List<Platform> getPlatforms() {
+    public Set<Platform> getPlatforms() {
         return platforms;
     }
 
-    public void setPlatforms(List<Platform> platforms) {
+    public void setPlatforms(Set<Platform> platforms) {
         this.platforms = platforms;
     }
 
