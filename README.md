@@ -19,9 +19,9 @@ Ice Dragon is a platform that has the goal of helping both the end user and the 
 
 ## For end users
 
-Do you sometimes feel like you, as an user, have become the product of the web as it currently works? You have to consume massive amounts of advertisement (or get harassed for using an Ad Blocker) and give away your personal information for free almost everywhere you go?
+Do you sometimes feel like you, as a user, have become the product of the web as it currently works? You have to consume massive amounts of advertisement (or get harassed for using an Ad Blocker) and give away your personal information for free almost everywhere you go?
 
-Ice Dragon is a platform that aims to incentivise end users to pay small amounts of money for the content they consume. As a paying customer you can then expect a streamlined and advertisement free experience. Also, we believe that you should be able to pay for a content subscription without revealing any personal information about you or your credit card.  
+Ice Dragon is a platform that aims to incentivise end users to pay small amounts of money for the content they consume. As a paying customer you can then expect a streamlined and advertisement free experience. Furthermore, we believe that you should be able to pay for a content subscription without revealing any personal information about you or your credit card.  
 The Ice Dragon platform lists compatible content providers and allows you to pay for their services easily with Bitcoin over the Lightning Network.
 
 ### Why you should use Ice Dragon to pay for content:
