@@ -149,7 +149,7 @@ developers, too.</p>
 
                             <div class="radio-input">
                                 <input id="card" type="radio" name="payment">
-                                Pay AU$20.99 with credit card
+                                Pay CHF 3.00 with credit card
                             </div>
                         </label>
 
@@ -157,7 +157,7 @@ developers, too.</p>
                             <img src="https://designmodo.com/demo/checkout-panel/img/paypal_logo.png"/>
                             <div class="radio-input">
                                 <input id="paypal" type="radio" name="payment">
-                                Pay AU$20.99 with PayPal
+                                Pay CHF 3.00 with PayPal
                             </div>
                         </label>
                     </div>
