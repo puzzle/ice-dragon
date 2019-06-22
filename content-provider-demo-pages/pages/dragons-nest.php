@@ -396,7 +396,6 @@ $GLOBALS['paymentConfirmationSecret'] = $_ENV["SECRET"];
 $GLOBALS['hmacAlgorithm'] = 'HS512';
 
 if(isset($_GET['voucher'])) {
-    echo $_ENV["SECRET"];
     $payload = verifyVoucher($_GET['voucher']);
     setcookie("ICE_DRAGON", $_GET['voucher'], $payload['exp']);
     echo "success";

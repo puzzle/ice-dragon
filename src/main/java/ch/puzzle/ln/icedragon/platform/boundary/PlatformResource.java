@@ -5,6 +5,7 @@ import ch.puzzle.ln.icedragon.platform.entity.PlatformRequest;
 import ch.puzzle.ln.icedragon.platform.entity.Subscription;
 import ch.puzzle.ln.icedragon.platform.entity.SubscriptionRequest;
 import ch.puzzle.ln.security.SecurityUtils;
+import ch.puzzle.ln.security.jwt.TokenProvider;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.lightningj.lnd.wrapper.StatusException;
@@ -31,9 +32,11 @@ public class PlatformResource {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final PlatformService platformService;
+    private final TokenProvider tokenProvider;
 
-    public PlatformResource(PlatformService platformService) {
+    public PlatformResource(PlatformService platformService, TokenProvider tokenProvider) {
         this.platformService = platformService;
+        this.tokenProvider = tokenProvider;
     }
 
     @GetMapping
@@ -100,20 +103,7 @@ public class PlatformResource {
     public String getTokenFor(@PathVariable("id") Long platformId) {
         String currentUserLogin = SecurityUtils.getCurrentUserLogin().orElseThrow();
         return platformService.findValidSubscription(currentUserLogin, platformId)
-            .map(this::createToken)
+            .map(s -> tokenProvider.createToken(s.getSubscriber().getLogin(), s.getPlatform().getPaymentConfirmationSecret(), s.getExpiration()))
             .orElseThrow();
-    }
-
-    private String createToken(Subscription subscription) {
-        return Jwts.builder()
-            .setSubject(subscription.getSubscriber().getLogin())
-            .signWith(getKey(subscription.getPlatform().getPaymentConfirmationSecret()), HS512)
-            .setExpiration(Date.from(subscription.getExpiration()))
-            .compact();
-    }
-
-    private Key getKey(String paymentConfirmationSecret) {
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(paymentConfirmationSecret);
-        return new SecretKeySpec(apiKeySecretBytes, HS512.getJcaName());
     }
 }

@@ -2,9 +2,11 @@ package ch.puzzle.ln.security.jwt;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import ch.puzzle.ln.icedragon.platform.entity.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -20,6 +22,12 @@ import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+
+import static io.jsonwebtoken.SignatureAlgorithm.HS512;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
 public class TokenProvider implements InitializingBean {
@@ -47,7 +55,7 @@ public class TokenProvider implements InitializingBean {
         if (!StringUtils.isEmpty(secret)) {
             log.warn("Warning: the JWT key used is not Base64-encoded. " +
                 "We recommend using the `jhipster.security.authentication.jwt.base64-secret` key for optimum security.");
-            keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+            keyBytes = secret.getBytes(UTF_8);
         } else {
             log.debug("Using a Base64-encoded JWT secret key");
             keyBytes = Decoders.BASE64.decode(jHipsterProperties.getSecurity().getAuthentication().getJwt().getBase64Secret());
@@ -76,8 +84,16 @@ public class TokenProvider implements InitializingBean {
         return Jwts.builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
-            .signWith(key, SignatureAlgorithm.HS512)
+            .signWith(key, HS512)
             .setExpiration(validity)
+            .compact();
+    }
+
+    public String createToken(String subject, String key, Instant expiration) {
+        return Jwts.builder()
+            .setSubject(subject)
+            .signWith(Keys.hmacShaKeyFor(key.getBytes(UTF_8)), HS512)
+            .setExpiration(Date.from(expiration))
             .compact();
     }
 
