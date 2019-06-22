@@ -400,7 +400,7 @@ text-align: center;
 
     <div style="position: fixed; top:5rem; right:0;">
         <div style="padding: 1rem; border: 1px solid #333">
-            <img src="ads/fullNodeGirl.jpg" width="400"/><br /><br />
+            <img src="ads/wateringCan.jpg" width="400"/><br /><br />
             <div style="font-size: 2.5rem; text-align: center;">
                 <a class="blink_me" href="https://theuselessweb.com/">> click here!! <</a>
             </div>
