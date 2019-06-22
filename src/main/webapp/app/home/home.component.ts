@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
+import * as lodash from 'lodash';
 
-import { Account, AccountService, AuthServerProvider, JhiTrackerService, LoginModalService } from 'app/core';
+import { Account, AccountService, AuthServerProvider, LoginModalService } from 'app/core';
 
 import { GetInfoResponse, requestProvider, WebLNProvider } from 'webln';
 import { IcedragonService } from 'app/icedragon/icedragon.service';
@@ -27,7 +28,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private eventManager: JhiEventManager,
     private service: IcedragonService,
     private authService: AuthServerProvider,
-    private trackerService: JhiTrackerService,
     private subscribeDialog: SubscribeDialogService
   ) {}
 
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   registerAuthenticationSuccess() {
-    this.eventManager.subscribe('authenticationSuccess', message => {
+    this.eventManager.subscribe('authenticationSuccess', () => {
       this.checkLogin();
     });
   }
@@ -75,7 +75,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.service.loginReckless(this.info.node.pubkey, signResponse.signature).subscribe(token => {
           this.authService.storeAuthenticationToken(token.id_token, false);
           this.checkLogin();
-          this.trackerService.sendActivity();
         });
       });
     });
@@ -93,6 +92,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   hasSubscription(platform: Platform) {
     if (this.platforms && this.account && this.account.subscriptions) {
+      return lodash.some(this.account.subscriptions, s => s.platformId === platform.id);
     }
     return false;
   }

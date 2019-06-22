@@ -10,6 +10,7 @@ export interface Subscription {
   invoiceString?: string;
   platform?: Platform;
   active?: boolean;
+  platformId?: number;
 }
 
 export function random(arr) {

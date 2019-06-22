@@ -113,22 +113,24 @@
     </div>
 
     <div *ngIf="isAuthenticated() && platforms && platforms.length > 0">
-        <h2>Registered services</h2>
-        <p>
-            Subscribe to any of the following websites to visit and consume their content advertisement and paywall free.
-        </p>
+      <h2>Registered services</h2>
+      <p>
+        Subscribe to any of the following websites to visit and consume their content advertisement and paywall free.
+      </p>
       <div class="list-group">
-        <div
-          *ngFor="let platform of platforms"
-          (click)="subscribe(platform)"
-          tabindex="-1"
-          class="list-group-item list-group-item-action flex-column align-items-start"
-        >
+        <div *ngFor="let platform of platforms" class="list-group-item list-group-item-action flex-column align-items-start">
           <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1">{{ platform.name }}</h5>
             <small>{{ platform.amountPerHour }} sat/hour</small>
           </div>
-          <p class="mb-1" *ngIf="!hasSubscription(platform)">
+          <div class="mb-1" *ngIf="!hasSubscription(platform)">
+            <a [href]="platform.contentUrl">{{ platform.contentUrl }}</a>
+            <div class="right" style="text-align: right;">
+              <button class="btn btn-primary" (click)="subscribe(platform)">Subscribe</button>
+            </div>
+          </div>
+          <p class="mb-1" *ngIf="hasSubscription(platform)">
+            <fa-icon icon="check"></fa-icon> &nbsp; You have already subscribed to this service! Visit <br />
             <a [href]="platform.contentUrl">{{ platform.contentUrl }}</a>
           </p>
         </div>
