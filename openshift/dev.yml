@@ -13,5 +13,6 @@ APPLICATION_LND_HOST: not-commited-to-git-entered-manually-on-platform
 APPLICATION_LND_PORT: 10009
 APPLICATION_LND_INVOICE_MACAROON_HEX: not-commited-to-git-entered-manually-on-platform
 APPLICATION_LND_READONLY_MACAROON_HEX: not-commited-to-git-entered-manually-on-platform
+APPLICATION_LND_ADMIN_MACAROON_HEX: not-commited-to-git-entered-manually-on-platform
 CONTENT_DEMO_SECRET: f143b7b9-f032-4847-a789-41f77c71ce9fb95fba76-5966-4bc7-9f28-37c67c5bded0
 CONTENT_DEMO_CORS_DOMAIN: https://ice-dragon.ose3.puzzle.ch

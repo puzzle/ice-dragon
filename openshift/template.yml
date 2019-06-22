@@ -251,6 +251,8 @@ objects:
                   value: ${APPLICATION_LND_INVOICE_MACAROON_HEX}
                 - name: APPLICATION_LND_READONLY_MACAROON_HEX
                   value: ${APPLICATION_LND_READONLY_MACAROON_HEX}
+                - name: APPLICATION_LND_ADMIN_MACAROON_HEX
+                  value: ${APPLICATION_LND_ADMIN_MACAROON_HEX}
               image: ice-dragon
               imagePullPolicy: Always
               livenessProbe:
