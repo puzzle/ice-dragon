@@ -3,6 +3,7 @@ import { Platform } from 'app/icedragon/platform.model';
 import { AccountService } from 'app/core';
 import { Subscription } from 'app/icedragon/subscription.model';
 import { IcedragonService } from 'app/icedragon/icedragon.service';
+import { requestProvider, WebLNProvider, RequestInvoiceArgs } from 'webln';
 
 @Component({
   selector: 'jhi-dasboard',
@@ -12,10 +13,12 @@ import { IcedragonService } from 'app/icedragon/icedragon.service';
 export class DashboardComponent implements OnInit {
   platforms: Platform[];
   subscriptions: Subscription[];
+  private webLN: WebLNProvider;
 
   constructor(private accountService: AccountService, private iceDragonService: IcedragonService) {}
 
   ngOnInit() {
+    this.registerWebLN();
     this.loadAccount(false);
   }
 
@@ -44,6 +47,19 @@ export class DashboardComponent implements OnInit {
     this.accountService.identity(force).then(account => {
       this.platforms = account.platforms.sort((a, b) => a.id - b.id);
       this.subscriptions = account.subscriptions.sort(this.getSubscriptionSorter());
+    });
+  }
+
+  registerWebLN() {
+    requestProvider().then(provider => {
+      this.webLN = provider;
+    });
+  }
+
+  redeemWithWebLN(platform: Platform) {
+    this.webLN.makeInvoice({ amount: platform.earnedSatoshis - platform.payedOutSatoshis }).then(value => {
+      platform.invoice = value.paymentRequest;
+      this.redeemSatoshis(platform);
     });
   }
 }

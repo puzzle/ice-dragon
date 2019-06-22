@@ -1,3 +1,5 @@
+import { RequestInvoiceArgs } from 'webln/lib/provider';
+
 export interface Platform {
   redeeming?: boolean;
   id: number;
