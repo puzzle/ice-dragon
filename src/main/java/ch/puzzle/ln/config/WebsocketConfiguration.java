@@ -43,6 +43,11 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
             .setAllowedOrigins(allowedOrigins)
             .withSockJS()
             .setInterceptors(httpSessionHandshakeInterceptor());
+
+        registry.addEndpoint("/websocket/invoice")
+            .setHandshakeHandler(defaultHandshakeHandler())
+            .setAllowedOrigins(allowedOrigins)
+            .withSockJS();
     }
 
     @Bean
