@@ -13,6 +13,12 @@ h2,
 h3,
 h4 {
   font-weight: 300;
+  margin-bottom: 10px;
+  margin-top: 15px;
+}
+
+body {
+  font-size: 1.1rem;
 }
 
 a {
@@ -171,3 +177,10 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+.blockquote {
+  margin-top: 20px;
+  padding: 30px 30px 30px 0;
+  font-style: italic;
+  font-size: 1.8rem;
+}
