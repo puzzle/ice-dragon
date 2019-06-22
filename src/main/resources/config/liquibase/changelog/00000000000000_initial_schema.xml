@@ -174,7 +174,7 @@
                 <constraints unique="true" nullable="false" uniqueConstraintName="ux_platform_content_url"/>
             </column>
             <column name="payment_confirmation_secret" type="varchar(255)">
-                <constraints unique="true" nullable="false" uniqueConstraintName="ux_platform_content_url"/>
+                <constraints unique="true" nullable="false" uniqueConstraintName="ux_platform_confirmation_secret"/>
             </column>
         </createTable>
 
