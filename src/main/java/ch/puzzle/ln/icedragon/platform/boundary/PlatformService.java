@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.DoubleStream;
 
 import static ch.puzzle.ln.ConvertUtil.bytesToHex;
 
@@ -119,5 +118,19 @@ public class PlatformService {
     public Optional<Subscription> findValidOrUnpaidSubscription(String currentUserLogin, Long platformId) {
         return findValidSubscription(currentUserLogin, platformId)
             .or(() -> findUnpaidSubscription(currentUserLogin, platformId));
+    }
+
+    public void redeemForPlatform(String currentUserLogin, Long platformId, String invoiceString) throws ValidationException, IOException, StatusException {
+        Platform platform = platformRepository.findById(platformId)
+            .filter(p -> p.getOwner().getLogin().equals(currentUserLogin))
+            .orElseThrow();
+
+        Long amountOfSatoshisRequested = lndService.getRequestedSatoshis(invoiceString);
+        long amountUnpayed = platform.getUnpayedSatoshis();
+        if (amountOfSatoshisRequested <= amountUnpayed) {
+            lndService.payRequest(invoiceString);
+            platform.payOutSatoshis(amountOfSatoshisRequested);
+            platformRepository.saveAndFlush(platform);
+        }
     }
 }

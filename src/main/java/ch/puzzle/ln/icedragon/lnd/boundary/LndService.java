@@ -8,10 +8,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
 import org.lightningj.lnd.wrapper.*;
-import org.lightningj.lnd.wrapper.message.AddInvoiceResponse;
-import org.lightningj.lnd.wrapper.message.Invoice;
-import org.lightningj.lnd.wrapper.message.InvoiceSubscription;
-import org.lightningj.lnd.wrapper.message.VerifyMessageResponse;
+import org.lightningj.lnd.wrapper.message.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ResourceLoader;
@@ -222,5 +219,15 @@ public class LndService implements StreamObserver<Invoice> {
                 asyncAPI = null;
             }
         }
+    }
+
+    public Long getRequestedSatoshis(String invoiceString) throws IOException, StatusException, ValidationException {
+        return getSyncReadonlyApi().decodePayReq(invoiceString).getNumSatoshis();
+    }
+
+    public void payRequest(String request) throws StatusException, ValidationException {
+        SendRequest sendRequest = new SendRequest();
+        sendRequest.setPaymentRequest(request);
+        syncInvoiceAPI.sendPaymentSync(sendRequest);
     }
 }

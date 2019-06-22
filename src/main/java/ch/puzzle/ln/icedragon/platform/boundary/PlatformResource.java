@@ -16,12 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -63,6 +61,13 @@ public class PlatformResource {
     @GetMapping(path = "{id}")
     public Platform findPlatform(@PathVariable("id") Long platformId) {
         return platformService.findPlatform(platformId);
+    }
+
+    @PostMapping(path = "{id}/redeem")
+    public ResponseEntity<Void> redeem(@PathVariable("id") Long platformId, @RequestBody String invoiceString) throws StatusException, IOException, ValidationException {
+        String currentUserLogin = SecurityUtils.getCurrentUserLogin().orElseThrow();
+        platformService.redeemForPlatform(currentUserLogin, platformId, invoiceString);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "{id}/subscription")

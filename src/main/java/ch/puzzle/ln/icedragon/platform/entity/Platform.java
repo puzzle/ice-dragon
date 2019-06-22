@@ -41,6 +41,12 @@ public class Platform {
     @Size(min = 5, max = 255)
     @Column(length = 255, unique = true, nullable = false)
     private String paymentConfirmationSecret;
+    @NotNull
+    @Min(0)
+    private Long earnedSatoshis = 0L;
+    @NotNull
+    @Min(0)
+    private Long payedOutSatoshis = 0L;
 
     public Platform() {
         this.paymentConfirmationSecret = UUID.randomUUID().toString();
@@ -100,5 +106,33 @@ public class Platform {
 
     public String getPaymentConfirmationSecret() {
         return this.paymentConfirmationSecret;
+    }
+
+    public void setEarnedSatoshis(Long earnedSatoshis) {
+        this.earnedSatoshis = earnedSatoshis;
+    }
+
+    public Long getEarnedSatoshis() {
+        return this.earnedSatoshis;
+    }
+
+    public void setPayedOutSatoshis(Long payedSatoshi) {
+        this.payedOutSatoshis = payedSatoshi;
+    }
+
+    public Long getPayedOutSatoshis() {
+        return this.payedOutSatoshis;
+    }
+
+    public Long getUnpayedSatoshis() {
+        return earnedSatoshis - payedOutSatoshis;
+    }
+
+    public void payOutSatoshis(long amountOfSatoshisPayed) {
+        this.payedOutSatoshis += amountOfSatoshisPayed;
+    }
+
+    public void earnSatoshis(long amtPaidSat) {
+        this.earnedSatoshis += amtPaidSat;
     }
 }

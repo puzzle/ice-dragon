@@ -176,6 +176,8 @@
             <column name="payment_confirmation_secret" type="varchar(255)">
                 <constraints unique="true" nullable="false" uniqueConstraintName="ux_platform_confirmation_secret"/>
             </column>
+            <column name="earned_satoshis" type="bigint"/>
+            <column name="payed_out_satoshis" type="bigint"/>
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="owner_id"
