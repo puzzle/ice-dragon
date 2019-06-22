@@ -167,6 +167,12 @@
             <column name="amount_per_hour" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="service_url" type="varchar(255)">
+                <constraints unique="true" nullable="false" uniqueConstraintName="ux_platform_service_url"/>
+            </column>
+            <column name="content_url" type="varchar(255)">
+                <constraints unique="true" nullable="false" uniqueConstraintName="ux_platform_content_url"/>
+            </column>
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="owner_id"

@@ -1,11 +1,13 @@
 package ch.puzzle.ln.icedragon.platform.entity;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class PlatformRequest {
     @NotNull
     private String name;
     @NotNull
+    @Min(0)
     private Long amountPerHour;
 
     public void setName(String name) {

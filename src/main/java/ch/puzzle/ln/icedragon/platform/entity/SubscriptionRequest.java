@@ -1,7 +1,6 @@
 package ch.puzzle.ln.icedragon.platform.entity;
 
 import javax.validation.constraints.NotNull;
-import java.time.Duration;
 
 public class SubscriptionRequest {
     @NotNull

@@ -26,6 +26,14 @@ public class Platform {
     @NotNull
     @Column(nullable = false)
     private Long amountPerHour;
+    @NotNull
+    @Size(min = 5, max = 255)
+    @Column(length = 255, unique = true, nullable = false)
+    private String serviceUrl;
+    @NotNull
+    @Size(min = 5, max = 255)
+    @Column(length = 255, unique = true, nullable = false)
+    private String contentUrl;
 
     public Long getId() {
         return id;
