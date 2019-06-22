@@ -4,4 +4,6 @@ export interface Platform {
   amountPerHour: number;
   serviceUrl: string;
   contentUrl: string;
+  earnedSatoshis: number;
+  payedOutSatoshis: number;
 }

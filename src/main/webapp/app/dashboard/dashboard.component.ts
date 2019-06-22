@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { IcedragonService } from 'app/icedragon/icedragon.service';
 import { Platform } from 'app/icedragon/platform.model';
 import { AccountService } from 'app/core';
 import { Subscription } from 'app/icedragon/subscription.model';
@@ -31,7 +30,7 @@ export class DashboardComponent implements OnInit {
           return 1;
         }
       }
-      return s2.validFrom.diff(s1.validFrom);
+      return s2.validFrom.localeCompare(s1.validFrom);
     };
   }
 }

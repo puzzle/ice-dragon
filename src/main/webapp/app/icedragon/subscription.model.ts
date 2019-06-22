@@ -1,9 +1,8 @@
-import { Moment } from 'moment';
 import { Platform } from 'app/icedragon/platform.model';
 
 export interface Subscription {
   id?: number;
-  validFrom?: Moment;
+  validFrom?: string;
   duration?: number;
   paymentHash?: string;
   preImage?: string;
