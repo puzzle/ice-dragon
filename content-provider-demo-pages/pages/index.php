@@ -317,7 +317,7 @@ Lightning quite a bit ;-).</p>
         <h2>
             &#9400; 2019 #Reckless Media Corp.
         </h2>
-        <p><a href="blog-post-pay-wall.html" style="color: white; text-decoration: none;">view PayWall example</a></p>
+        <p><a href="blog-post-pay-wall.php" style="color: white; text-decoration: none;">view PayWall example</a></p>
       </section>
     </aside>
     <!-- /sidebar -->
