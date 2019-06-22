@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -94,5 +95,12 @@ public class Subscription {
 
     public String getInvoiceString() {
         return invoiceString;
+    }
+
+    public Instant getExpiration() {
+        if (isActive()) {
+            return validFrom.plus(duration, ChronoUnit.HOURS);
+        }
+        return Instant.now();
     }
 }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.security.Key;
 
 @Entity
 public class Platform {
@@ -34,6 +35,10 @@ public class Platform {
     @Size(min = 5, max = 255)
     @Column(length = 255, unique = true, nullable = false)
     private String contentUrl;
+    @NotNull
+    @Size(min = 5, max = 255)
+    @Column(length = 255, unique = true, nullable = false)
+    private String paymentConfirmationSecret;
 
     public Long getId() {
         return id;
@@ -65,5 +70,13 @@ public class Platform {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setPaymentConfirmationSecret(String paymentConfirmationSecret) {
+        this.paymentConfirmationSecret = paymentConfirmationSecret;
+    }
+
+    public String getPaymentConfirmationSecret() {
+        return this.paymentConfirmationSecret;
     }
 }

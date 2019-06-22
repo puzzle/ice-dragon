@@ -16,7 +16,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static ch.puzzle.ln.ConvertUtil.bytesToHex;
 
@@ -60,7 +62,7 @@ public class PlatformService {
 
 
     private long getPriceInSatoshi(Platform price, long subscriptionDuration) {
-            return price.getAmountPerHour() * subscriptionDuration;
+        return price.getAmountPerHour() * subscriptionDuration;
     }
 
     private Subscription getSubscription(User subscriber, Platform platform, long subscriptionDuration) {
@@ -91,5 +93,15 @@ public class PlatformService {
 
     public List<Platform> findAllPlatforms() {
         return platformRepository.findAll();
+    }
+
+    public Optional<Subscription> findValidSubscription(String currentUserLogin, Long platformId) {
+        return userRepository.findOneByLogin(currentUserLogin)
+            .map(User::getSubscriptions)
+            .stream()
+            .flatMap(Collection::stream)
+            .filter(subscription -> subscription.getPlatform().getId().equals(platformId))
+            .filter(Subscription::isActive)
+            .findAny();
     }
 }
