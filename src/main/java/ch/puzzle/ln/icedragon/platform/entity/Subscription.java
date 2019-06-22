@@ -37,7 +37,7 @@ public class Subscription {
     private String invoiceString;
 
     public boolean isActive() {
-        return Objects.nonNull(paymentHash) &&
+        return Objects.nonNull(paymentHash) && Objects.nonNull(validFrom) && Objects.nonNull(duration) &&
             validFrom.plus(duration, ChronoUnit.HOURS).isAfter(Instant.now());
     }
 

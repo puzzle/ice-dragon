@@ -182,59 +182,22 @@
             <column name="platform_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="subscriber_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
 
-            <column name="validFrom" type="timestamp"/>
+            <column name="valid_from" type="timestamp"/>
             <column name="duration" type="bigint"/>
             <column name="payment_hash" type="varchar(255)"/>
             <column name="pre_image" type="varchar(255)"/>
             <column name="invoice_string" type="varchar(255)"/>
         </createTable>
 
-
-        <createTable tableName="jhi_user_platform">
-            <column name="user_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="platform_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="user_id, platform_id" tableName="jhi_user_platform"/>
-
-        <addForeignKeyConstraint baseColumnNames="platform_id"
-                                 baseTableName="jhi_user_platform"
-                                 constraintName="fk_jhi_user_platform_platform_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="platform"/>
-
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="jhi_user_authority"
-                                 constraintName="fk_jhi_user_platform_user_id"
+        <addForeignKeyConstraint baseColumnNames="subscriber_id"
+                                 baseTableName="subscription"
+                                 constraintName="fk_subscription_user"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
-        <createTable tableName="jhi_user_subscription">
-            <column name="user_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="subscription_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="user_id, subscription_id" tableName="jhi_user_subscription"/>
-
-        <addForeignKeyConstraint baseColumnNames="subscription_id"
-                                 baseTableName="jhi_user_subscription"
-                                 constraintName="jhi_user_subscription_subscription_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="subscription"/>
-
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="jhi_user_subscription"
-                                 constraintName="jhi_user_subscription_user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
     </changeSet>
 </databaseChangeLog>
