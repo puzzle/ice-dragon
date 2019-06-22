@@ -7,6 +7,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Entity
 public class Platform {
@@ -40,6 +41,10 @@ public class Platform {
     @Size(min = 5, max = 255)
     @Column(length = 255, unique = true, nullable = false)
     private String paymentConfirmationSecret;
+
+    public Platform() {
+        this.paymentConfirmationSecret = UUID.randomUUID().toString();
+    }
 
     public Long getId() {
         return id;
