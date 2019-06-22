@@ -4,6 +4,8 @@ import ch.puzzle.ln.icedragon.lnd.boundary.InvoiceHandler;
 import ch.puzzle.ln.icedragon.lnd.boundary.LndService;
 import ch.puzzle.ln.icedragon.platform.control.SubscriptionRepository;
 import ch.puzzle.ln.icedragon.platform.entity.SubscriptionEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import static ch.puzzle.ln.ConvertUtil.unixTimestampToInstant;
 @Transactional
 public class SubscriptionService implements InvoiceHandler {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SubscriptionService.class);
     private final LndService lndService;
     private final SubscriptionRepository subscriptionRepository;
     private final ApplicationEventPublisher eventPublisher;
@@ -37,6 +40,8 @@ public class SubscriptionService implements InvoiceHandler {
                     subscription.setValidFrom(unixTimestampToInstant(invoice.getSettleDate()));
                     subscription.setPreImage(bytesToHex(invoice.getRPreimage()));
                 }
+                LOG.debug("Received update for subscriber {} on subscription {}.", subscription.getSubscriber().getLogin(),
+                    subscription.getPaymentHash());
                 eventPublisher.publishEvent(new SubscriptionEvent(this, subscription));
             });
     }

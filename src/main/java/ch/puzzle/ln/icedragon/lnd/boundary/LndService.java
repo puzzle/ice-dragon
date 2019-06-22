@@ -88,7 +88,6 @@ public class LndService implements StreamObserver<Invoice> {
     }
 
 
-
     private AsynchronousLndAPI getAsyncApi() throws IOException {
         if (asyncAPI == null) {
             asyncAPI = new AsynchronousLndAPI(
@@ -140,7 +139,7 @@ public class LndService implements StreamObserver<Invoice> {
     @Override
     public void onNext(org.lightningj.lnd.wrapper.message.Invoice invoice) {
         String invoiceHex = bytesToHex(invoice.getRHash());
-        LOG.info("Received update on subscription for {}.", invoiceHex);
+        LOG.debug("Received update on subscription for {}.", invoiceHex);
         invoiceHandlers.forEach(h -> h.handleInvoiceUpdated(invoiceHex, invoice));
     }
 
@@ -172,7 +171,20 @@ public class LndService implements StreamObserver<Invoice> {
 
     @Override
     public void onCompleted() {
-        LOG.info("Subscription for listening to invoices completed.");
+        try {
+            LOG.info("Subscription for listening to invoices completed.");
+            Thread.sleep(NODE_LOCKED_RETRY_TIMEOUT);
+            try {
+                resetAsyncApi();
+                subscribeToInvoices();
+            } catch (StatusException | ValidationException | IOException e) {
+                LOG.error("Couldn't subscribe to invoices! sleeping for 5 seconds", e);
+                Thread.sleep(CONNECTION_RETRY_TIMEOUT);
+                onError(e);
+            }
+        } catch (InterruptedException e1) {
+            LOG.error("woke up from sleep, exiting loop", e1);
+        }
     }
 
 
