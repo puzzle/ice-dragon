@@ -1,3 +1,17 @@
+<?php
+
+require_once('dragons-nest.php');
+
+?>
+
+<?php
+    if(!hasIceDragonCookie()) {
+?>
+
+<?php
+    }
+?>
+
 <!DOCTYPE html>
 <html class="js nivo-lightbox-notouch" lang="de-DE"><head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -128,6 +142,11 @@ developers, too.</p>
 <img src="https://www.puzzle.ch/wp-content/uploads/2018/11/Rocket.png" class="attachment-medium size-medium wp-post-image" alt="">        <!-- /post thumbnail -->
 
 <h2>A Brief Overview of the Talks</h2>
+
+<?php
+    if(!hasIceDragonCookie()) {
+?>
+
 <div style="margin: 2rem;">
     <div style="padding: 1rem; border: 1px solid #333">
         <img src="ads/Bitconnect.png"/>
@@ -136,6 +155,11 @@ developers, too.</p>
         <p>Advertisement</p>
     </div>
 </div>
+
+<?php
+    }
+?>
+
 <p>In addition to the presentation our team gave about Java PoS (you can watch <a href="https://www.youtube.com/watch?v=FGxFd944jMg&amp;feature=youtu.be&amp;t=19024" data-rel="lightbox-video-0">our video</a>
  here), there were a number of other Hackday speakers. All the talks 
 were interesting, but here’s a list of my favorites in case you don’t 
@@ -331,6 +355,11 @@ var wpcf7 = {"apiSettings":{"root":"https:\/\/www.puzzle.ch\/wp-json\/contact-fo
   
 
 <div id="wp-a11y-speak-polite" aria-live="polite" aria-relevant="additions text" aria-atomic="true" class="screen-reader-text wp-a11y-speak-region"></div><div id="wp-a11y-speak-assertive" aria-live="assertive" aria-relevant="additions text" aria-atomic="true" class="screen-reader-text wp-a11y-speak-region"></div><div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; position: fixed; visibility: hidden; display: block; transition: right 0.3s ease 0s; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px;"><div class="grecaptcha-logo"><iframe src="SampleBlogPost_files/anchor.html" role="presentation" name="a-takc9xwb10bb" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" width="256" height="60" frameborder="0"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;">03AOLTBLSrep37QD-XhJgp-VIQ0ZFnaHNfSjloLzZehpRpyM4TVS1CjJgzTU-5sJRLQscs7WSeS_GnSROR9aCWsyWZmLG1RXv8YALZqWNok0G7pECxgGszCnaVTDrlVyfDM4HFf4AYE4qUHL75qLCDPeShXH2z2B7zyy2ISRYS9OxFBZwCiKcyrqSJrr-J-OGxpmmKZGA_hIkFtt2I7DAfdqwyQvo-nVGoHETyne5wwCryfwPJ7_y9PW8oSvAZ-l8pQcw47H_B4RhfljrIqimtR4kW12K36LipQhesFs1IUxw1v5uoe5zfJCyASpxLhz9b49sh-ayChW-w</textarea></div></div>
+
+<?php
+    if(!hasIceDragonCookie()) {
+?>
+
 <div style="position: fixed; bottom:0; left:0;">
   <h1 style="font-weight: bold; font-size: 3.5rem;
   background-image: repeating-linear-gradient(45deg, violet, indigo, blue, green, yellow, orange, red, violet);
@@ -386,5 +415,9 @@ text-align: center;
             <hr />
         </div>
     </div>
+
+<?php
+    }
+?>
 
   </body></html>
