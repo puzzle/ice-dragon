@@ -71,6 +71,13 @@ public class PlatformResource {
         }
     }
 
+    @GetMapping(path = "{id}/subscription")
+    public Subscription getSubscription(@PathVariable("id") Long platformId) {
+        String currentUserLogin = SecurityUtils.getCurrentUserLogin().orElseThrow();
+        return platformService.findValidOrUnpaidSubscription(currentUserLogin, platformId)
+            .orElseThrow();
+    }
+
 
     @GetMapping(path = "{id}/token")
     public String getTokenFor(@PathVariable("id") Long platformId) {

@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.DoubleStream;
 
 import static ch.puzzle.ln.ConvertUtil.bytesToHex;
 
@@ -103,5 +104,21 @@ public class PlatformService {
             .filter(subscription -> subscription.getPlatform().getId().equals(platformId))
             .filter(Subscription::isActive)
             .findAny();
+    }
+
+
+    public Optional<Subscription> findUnpaidSubscription(String currentUserLogin, Long platformId) {
+        return userRepository.findOneByLogin(currentUserLogin)
+            .map(User::getSubscriptions)
+            .stream()
+            .flatMap(Collection::stream)
+            .filter(subscription -> subscription.getPlatform().getId().equals(platformId))
+            .filter(subscription -> subscription.getPreImage() == null)
+            .findAny();
+    }
+
+    public Optional<Subscription> findValidOrUnpaidSubscription(String currentUserLogin, Long platformId) {
+        return findValidSubscription(currentUserLogin, platformId)
+            .or(() -> findUnpaidSubscription(currentUserLogin, platformId));
     }
 }
