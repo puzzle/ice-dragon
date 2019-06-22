@@ -88,7 +88,7 @@ public class PlatformResource {
     }
 
     private Key getKey(String paymentConfirmationSecret) {
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS512;
 
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(paymentConfirmationSecret);
         return new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
