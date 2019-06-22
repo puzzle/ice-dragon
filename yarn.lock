@@ -952,6 +952,13 @@ angular2-template-loader@0.6.2:
   dependencies:
     loader-utils "^0.2.15"
 
+angularx-qrcode@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/angularx-qrcode/-/angularx-qrcode-1.6.0.tgz#39f3149b661c0614f56e811d854ed5a5c02bc3ea"
+  integrity sha512-CrzOkdbHZNxfcMwq4vhxMpxfwxwN55SMl9LSHE7OU6BMcVeepWgtyoUxNhuOu9aqQD8jAiSkAhqvVrrs8CSkGg==
+  dependencies:
+    qrcodejs2 "0.0.2"
+
 ansi-colors@^3.0.0:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.4.tgz#e3a3da4bfbae6c86a9c285625de124a234026fbf"
@@ -5845,6 +5852,11 @@ jhipster-core@4.0.2:
     lodash "4.17.11"
     winston "3.2.1"
 
+jquery@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
+  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
+
 js-object-pretty-print@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/js-object-pretty-print/-/js-object-pretty-print-0.3.0.tgz#4670e450066ee1eccf35174c7d197f5aa38bcf74"
@@ -6128,6 +6140,11 @@ levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+light-it-up@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/light-it-up/-/light-it-up-1.0.1.tgz#f20ad3152084c7c30e59d7199a1a6182d22fa563"
+  integrity sha512-faLAiRVn1XQvzruRNH7uJGUk4CeEJHMsnehk0HaYnXXm7XVq1yw3a8OX3XTAWwx4dqLVvggaFGZzbVDE6EqYlw==
 
 limiter@^1.0.5:
   version "1.1.4"
@@ -8409,6 +8426,11 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qrcodejs2@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/qrcodejs2/-/qrcodejs2-0.0.2.tgz#465afe5e39f19facecb932c11f7a186109146ae1"
+  integrity sha1-Rlr+Xjnxn6zsuTLBH3oYYQkUauE=
 
 qs@6.2.3:
   version "6.2.3"

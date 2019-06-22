@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <h4 class="modal-title">Create subscription for {{platform.name}}</h4>
+    <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')"><span
+        aria-hidden="true">x</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <div class="alert alert-danger" *ngIf="checkoutError">
+                <strong>Failed to create subscription!</strong><br/>
+                Please try again.<br/>
+                <small>Code/message: {{checkoutError}}</small>
+            </div>
+        </div>
+        <div class="col-md-11" *ngIf="!invoice && !paid">
+            <form class="form" role="form" (ngSubmit)="checkout()" novalidate>
+                <div class="form-group">
+                    <label for="duration">How many hours of advertisement and paywall free service would you like to pay for?</label>
+                    <select class="form-control" name="duration" id="duration" [(ngModel)]="durationHours">
+                        <option [value]="1">1 Hour</option>
+                        <option [value]="2">2 Hours</option>
+                        <option [value]="3">3 Hours</option>
+                        <option [value]="4">4 Hours</option>
+                        <option [value]="5">5 Hours</option>
+                        <option [value]="8">8 Hours</option>
+                        <option [value]="12">12 Hours</option>
+                        <option [value]="18">18 Hours</option>
+                        <option [value]="24">1 Day</option>
+                        <option [value]="48">2 Days</option>
+                        <option [value]="72">3 Days</option>
+                        <option [value]="96">4 Days</option>
+                        <option [value]="120">5 Days</option>
+                        <option [value]="168">1 Week</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Pay now with Bitcoin <span class="lightning-bolt"></span>
+                    <fa-icon icon="spinner" [spin]="true" *ngIf="loading"></fa-icon>
+                </button>
+            </form>
+        </div>
+        <div class="col-md-11 payment-request" *ngIf="invoice && invoice.invoiceString && !paid">
+            <div class="intro">
+                Please pay this invoice with your Lightning Network enabled wallet
+                by scanning the QR code or by clicking on it if your wallet is on
+                the same device.
+            </div>
+            <a [href]="paymentLink">
+                <qrcode [qrdata]="invoice.invoiceString" [size]="300" level="L" [attr.title]="''"></qrcode>
+            </a>
+            <div class="total">
+                Total: <strong>{{(durationHours * platform.amountPerHour) | number : '1.0-0'}} Satoshi</strong>
+            </div>
+        </div>
+        <div class="col-md-11 payment-request" *ngIf="paid">
+            <fa-icon size="6x" icon="check-circle" class="success"></fa-icon>
+            <div class="intro">
+                Thank you for your payment of {{durationHours * platform.amountPerHour | number : '1.0-0'}} Satoshi.<br/>
+                You can now visit the platform <a [href]="platform.contentUrl" target="_blank">{{platform.contentUrl}}</a>
+                advertisement and paywall free for {{durationHours}} hour(s).
+            </div>
+            <button (click)="close()" class="btn btn-primary">
+                Close
+            </button>
+        </div>
+    </div>
+</div>

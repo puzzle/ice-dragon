@@ -1,0 +1,90 @@
+@import '~bootswatch/dist/lumen/variables';
+
+.form-group {
+  .btn-group.btn-group-toggle.two-items {
+    width: 100%;
+    display: block;
+
+    label.btn {
+      width: calc(50% - 2px);
+
+      &.btn-primary:not(.active) {
+        opacity: 0.66;
+      }
+    }
+  }
+
+  .input-group-text {
+    text-align: left;
+  }
+}
+
+.form,
+.payment-request {
+  button.btn-primary {
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+
+.payment-request {
+  color: black;
+
+  ::ng-deep qrcode {
+    img {
+      margin: 0 auto;
+    }
+  }
+
+  .intro {
+    padding-bottom: 10px;
+
+    strong {
+      font-size: 190%;
+      line-height: 60px;
+    }
+  }
+
+  .total {
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 10px;
+  }
+
+  .info-row {
+    position: relative;
+    height: 25px;
+    width: 100%;
+
+    .left {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    .right {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+
+  h3 {
+    margin-top: 20px;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  ::ng-deep fa-icon.success {
+    display: block;
+    margin: 0 auto;
+    width: 6em;
+    margin-bottom: 15px;
+
+    svg path {
+      fill: $primary;
+    }
+  }
+}

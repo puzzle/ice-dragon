@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -6,17 +6,20 @@ import { Account, AccountService, AuthServerProvider, JhiTrackerService, LoginMo
 
 import { GetInfoResponse, requestProvider, WebLNProvider } from 'webln';
 import { IcedragonService } from 'app/icedragon/icedragon.service';
+import { Platform } from 'app/icedragon/platform.model';
+import { SubscribeDialogService } from 'app/home/subscribe-dialog.service';
 
 @Component({
   selector: 'jhi-home',
   templateUrl: './home.component.html',
   styleUrls: ['home.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   account: Account;
   modalRef: NgbModalRef;
   webLN: WebLNProvider;
   info: GetInfoResponse;
+  platforms: Platform[];
 
   constructor(
     private accountService: AccountService,
@@ -24,22 +27,30 @@ export class HomeComponent implements OnInit {
     private eventManager: JhiEventManager,
     private service: IcedragonService,
     private authService: AuthServerProvider,
-    private trackerService: JhiTrackerService
+    private trackerService: JhiTrackerService,
+    private subscribeDialog: SubscribeDialogService
   ) {}
 
   ngOnInit() {
-    this.accountService.identity().then((account: Account) => {
-      this.account = account;
-    });
+    this.checkLogin();
     this.registerAuthenticationSuccess();
     this.registerWebLN();
   }
 
+  ngAfterViewInit(): void {
+    this.checkLogin();
+  }
+
+  checkLogin() {
+    this.accountService.identity().then((account: Account) => {
+      this.account = account;
+      this.getPlatforms();
+    });
+  }
+
   registerAuthenticationSuccess() {
     this.eventManager.subscribe('authenticationSuccess', message => {
-      this.accountService.identity().then(account => {
-        this.account = account;
-      });
+      this.checkLogin();
     });
   }
 
@@ -63,12 +74,20 @@ export class HomeComponent implements OnInit {
       this.webLN.signMessage(challenge).then(signResponse => {
         this.service.loginReckless(this.info.node.pubkey, signResponse.signature).subscribe(token => {
           this.authService.storeAuthenticationToken(token.id_token, false);
-          this.accountService.identity(true).then(account => {
-            this.trackerService.sendActivity();
-            this.account = account;
-          });
+          this.checkLogin();
+          this.trackerService.sendActivity();
         });
       });
     });
+  }
+
+  getPlatforms() {
+    if (this.accountService.isAuthenticated()) {
+      this.service.getPlatforms().subscribe(platforms => (this.platforms = platforms));
+    }
+  }
+
+  subscribe(platform: Platform) {
+    this.subscribeDialog.openDialog(platform);
   }
 }
