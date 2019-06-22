@@ -45,13 +45,13 @@ public class PlatformResource {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createPlatform(@RequestBody PlatformRequest platformRequest) {
+    public ResponseEntity<String> createPlatform(@RequestBody PlatformRequest platformRequest) {
         String currentUserLogin = SecurityUtils.getCurrentUserLogin().orElseThrow();
         try {
             Platform platform = platformService.createPlatform(currentUserLogin, platformRequest);
             return ResponseEntity
                 .created(UriComponentsBuilder.fromUriString("/api/platform/{id}").build(platform.getId()))
-                .build();
+                .body(platform.getPaymentConfirmationSecret());
         } catch (DataIntegrityViolationException e) {
             if (e.getMessage() != null && e.getMessage().contains("ux_platform_name")) {
                 throw new NameAlreadyExists();

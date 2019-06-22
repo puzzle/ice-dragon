@@ -5,6 +5,9 @@ import { PLATFORM_NAME_EXISTS_TYPE, PLATFORM_URL_EXISTS_TYPE } from 'app/shared'
 import { IcedragonService } from 'app/icedragon/icedragon.service';
 
 export const URL_PATTERN = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}(\.[a-z]{2,6})?\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+export const PLACEHOLDER_PATTERN = /<<<YOUR_PAYMENT_CONFIRMATION_SECRET>>>/g;
+export const PHP_FILE_1_TEMPLATE = require('./dragons-nest-1.template.txt').default;
+export const PHP_FILE_2_TEMPLATE = require('./dragons-nest-2.template.txt').default;
 
 @Component({
   selector: 'jhi-provide',
@@ -16,6 +19,8 @@ export class ProvideComponent implements OnInit, AfterViewInit {
   errorNameExists: string;
   errorUrlExists: string;
   success: boolean;
+  script1: string = PHP_FILE_1_TEMPLATE;
+  script2: string;
 
   registerForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255), Validators.pattern('^[ _.@A-Za-z0-9-]*$')]],
@@ -43,8 +48,9 @@ export class ProvideComponent implements OnInit, AfterViewInit {
     const platform = this.registerForm.value;
 
     this.icedragonService.addPlatform(platform).subscribe(
-      () => {
+      code => {
         this.success = true;
+        this.script2 = PHP_FILE_2_TEMPLATE.replace(PLACEHOLDER_PATTERN, code);
       },
       response => this.processError(response)
     );

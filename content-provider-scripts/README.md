@@ -14,7 +14,7 @@ Once called, they fly to the rescue, to tear down the (payment)walls behind whic
 ### Remove Ads and Paywall for visitors with a voucher (Cookie)
 Add an if-clause surrounding ad-including instruction and/or your Paywall instruction as such (code in PHP):
 ```php
-require_once('/path/to/your/dragonNest.php');
+require_once('/path/to/your/dragons-nest.php');
 if(!hasIceDragonCookie()) {
     // here come your ads or your paywall
 }

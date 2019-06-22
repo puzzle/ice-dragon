@@ -8,6 +8,7 @@ This README will also be submitted as part of the final solution/submission.
 
 - URL to working application: [ice-dragon.ose3.puzzle.ch](https://ice-dragon.ose3.puzzle.ch)
 - URL to public GitHub repository: [github.com/puzzle/ice-dragon](https://github.com/puzzle/ice-dragon)
+- URL to the demo content provider page: [ice-dragon-content-demo.ose3.puzzle.ch](https://ice-dragon-content-demo.ose3.puzzle.ch)
 - Short description: see next chapter
 
 # What is Ice Dragon?

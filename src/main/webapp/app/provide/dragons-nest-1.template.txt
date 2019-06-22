@@ -1,0 +1,4 @@
+require_once('/path/to/your/dragons-nest.php');
+if(!hasIceDragonCookie()) {
+    // here come your ads or your paywall that you would show to your normal users
+}

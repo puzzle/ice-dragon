@@ -1,96 +1,146 @@
 <div>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1>Register your content</h1>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1>Register your content</h1>
 
-            <div class="alert alert-success" *ngIf="success"><strong>Registration saved!</strong> You can now see your balance in the overview.</div>
+      <div class="alert alert-success" *ngIf="success">
+        <strong>Registration saved!</strong> You can now see your balance in the overview.
+      </div>
 
-            <div class="alert alert-danger" *ngIf="error"><strong>Registration failed!</strong> Please try again later.</div>
+      <div class="alert alert-danger" *ngIf="error"><strong>Registration failed!</strong> Please try again later.</div>
 
-            <div class="alert alert-danger" *ngIf="errorNameExists">
-                <strong>Service name already registered!</strong> Please choose another one.
-            </div>
+      <div class="alert alert-danger" *ngIf="errorNameExists">
+        <strong>Service name already registered!</strong> Please choose another one.
+      </div>
 
-            <div class="alert alert-danger" *ngIf="errorUrlExists">
-                <strong>Service URL is already in use!</strong> Please choose another one.
-            </div>
-        </div>
+      <div class="alert alert-danger" *ngIf="errorUrlExists">
+        <strong>Service URL is already in use!</strong> Please choose another one.
+      </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
-                <div class="form-group">
-                    <label class="form-control-label" for="name">Service name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Your service name" formControlName="name" />
-                    <div *ngIf="registerForm.get('name').invalid && (registerForm.get('name').dirty || registerForm.get('name').touched)">
-                        <small class="form-text text-danger" *ngIf="registerForm.get('name').errors.required">
-                            Your service name is required.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('name').errors.minlength">
-                            Your service name is required to be at least 1 character.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('name').errors.maxlength">
-                            Your service name cannot be longer than 255 characters.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('name').errors.pattern">
-                            Your service name can't contain special characters.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="amountPerHour">Amount per hour (satoshi)</label>
-                    <input type="number" class="form-control" id="amountPerHour" name="amountPerHour" placeholder="Amount per hour" formControlName="amountPerHour" />
-                    <div *ngIf="registerForm.get('amountPerHour').invalid && (registerForm.get('amountPerHour').dirty || registerForm.get('amountPerHour').touched)">
-                        <small class="form-text text-danger" *ngIf="registerForm.get('amountPerHour').errors.required">
-                            Amount per hour is required.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('amountPerHour').errors.min">
-                            Amount per hour must be at least 1 satoshi.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('amountPerHour').errors.max">
-                            Amount per hour cannot be more than 1 BTC.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="serviceUrl">Full URL to your <code>dragons-nest.php</code></label>
-                    <input type="text" class="form-control" id="serviceUrl" name="serviceUrl" placeholder="Service URL" formControlName="serviceUrl" />
-                    <div *ngIf="registerForm.get('serviceUrl').invalid && (registerForm.get('serviceUrl').dirty || registerForm.get('serviceUrl').touched)">
-                        <small class="form-text text-danger" *ngIf="registerForm.get('serviceUrl').errors.required">
-                            URL is required.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('serviceUrl').errors.minlength">
-                            URL is required to be at least 5 characters.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('serviceUrl').errors.maxlength">
-                            URL cannot be longer than 255 characters.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('serviceUrl').errors.pattern">
-                            The URL must be a valid full absolute URL including <code>http://</code> or <code>https://</code>
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" for="contentUrl">URL to your website/blog/service that the user can visit</label>
-                    <input type="text" class="form-control" id="contentUrl" name="contentUrl" placeholder="Content URL" formControlName="contentUrl" />
-                    <div *ngIf="registerForm.get('serviceUrl').invalid && (registerForm.get('contentUrl').dirty || registerForm.get('contentUrl').touched)">
-                        <small class="form-text text-danger" *ngIf="registerForm.get('contentUrl').errors.required">
-                            URL is required.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('contentUrl').errors.minlength">
-                            URL is required to be at least 5 characters.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('contentUrl').errors.maxlength">
-                            URL cannot be longer than 255 characters.
-                        </small>
-                        <small class="form-text text-danger" *ngIf="registerForm.get('contentUrl').errors.pattern">
-                            The URL must be a valid full absolute URL including <code>http://</code> or <code>https://</code>
-                        </small>
-                    </div>
-                </div>
-
-                <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary">Register</button>
-            </form>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
+        <div class="form-group">
+          <label class="form-control-label" for="name">Service name</label>
+          <input type="text" class="form-control" id="name" name="name" placeholder="Your service name" formControlName="name" />
+          <div *ngIf="registerForm.get('name').invalid && (registerForm.get('name').dirty || registerForm.get('name').touched)">
+            <small class="form-text text-danger" *ngIf="registerForm.get('name').errors.required">
+              Your service name is required.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('name').errors.minlength">
+              Your service name is required to be at least 1 character.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('name').errors.maxlength">
+              Your service name cannot be longer than 255 characters.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('name').errors.pattern">
+              Your service name can't contain special characters.
+            </small>
+          </div>
         </div>
+        <div class="form-group">
+          <label class="form-control-label" for="amountPerHour">Amount per hour (satoshi)</label>
+          <input
+            type="number"
+            class="form-control"
+            id="amountPerHour"
+            name="amountPerHour"
+            placeholder="Amount per hour"
+            formControlName="amountPerHour"
+          />
+          <div
+            *ngIf="
+              registerForm.get('amountPerHour').invalid &&
+              (registerForm.get('amountPerHour').dirty || registerForm.get('amountPerHour').touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="registerForm.get('amountPerHour').errors.required">
+              Amount per hour is required.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('amountPerHour').errors.min">
+              Amount per hour must be at least 1 satoshi.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('amountPerHour').errors.max">
+              Amount per hour cannot be more than 1 BTC.
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="serviceUrl"
+            >Full URL to your <code>dragons-nest.php</code>, where it will be available (the code for that is shown later or can be found in
+            the README)</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="serviceUrl"
+            name="serviceUrl"
+            placeholder="Service URL"
+            formControlName="serviceUrl"
+          />
+          <div
+            *ngIf="
+              registerForm.get('serviceUrl').invalid && (registerForm.get('serviceUrl').dirty || registerForm.get('serviceUrl').touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="registerForm.get('serviceUrl').errors.required">
+              URL is required.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('serviceUrl').errors.minlength">
+              URL is required to be at least 5 characters.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('serviceUrl').errors.maxlength">
+              URL cannot be longer than 255 characters.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('serviceUrl').errors.pattern">
+              The URL must be a valid full absolute URL including <code>http://</code> or <code>https://</code>
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="contentUrl">URL to your website/blog/service that the user can visit</label>
+          <input
+            type="text"
+            class="form-control"
+            id="contentUrl"
+            name="contentUrl"
+            placeholder="Content URL"
+            formControlName="contentUrl"
+          />
+          <div
+            *ngIf="
+              registerForm.get('serviceUrl').invalid && (registerForm.get('contentUrl').dirty || registerForm.get('contentUrl').touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="registerForm.get('contentUrl').errors.required">
+              URL is required.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('contentUrl').errors.minlength">
+              URL is required to be at least 5 characters.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('contentUrl').errors.maxlength">
+              URL cannot be longer than 255 characters.
+            </small>
+            <small class="form-text text-danger" *ngIf="registerForm.get('contentUrl').errors.pattern">
+              The URL must be a valid full absolute URL including <code>http://</code> or <code>https://</code>
+            </small>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="registerForm.invalid" class="btn btn-primary">Register</button>
+      </form>
     </div>
+  </div>
+  <div class="row justify-content-center" *ngIf="success">
+    <div class="col-md-8">
+      <p>That's it from our part. Now you need to add two scripts to your service/website.</p>
+      <h3>Script 1: Remove advertisement when cookie is set</h3>
+      <ngx-prism [language]="'php'">{{ script1 }}</ngx-prism>
+      <br />
+      <h3>Script 2: The <code>dragons-nest.php</code> script</h3>
+      <p>Please place this file shomewhere in your website so it is reachable from the internet through the URL you just entered.</p>
+      <ngx-prism [language]="'php'" class="scrollable-area">{{ script2 }}</ngx-prism>
+    </div>
+  </div>
 </div>

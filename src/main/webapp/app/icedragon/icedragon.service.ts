@@ -18,8 +18,8 @@ export class IcedragonService {
     return this.http.post(SERVER_API_URL + 'api/recklessuser/login', { nodePublicKey: pubKey, challengeResponse: signature });
   }
 
-  addPlatform(platform: Platform): Observable<void> {
-    return this.http.post<void>(SERVER_API_URL + 'api/platform', platform);
+  addPlatform(platform: Platform): Observable<string> {
+    return this.http.post(SERVER_API_URL + 'api/platform', platform, { responseType: 'text' });
   }
 
   getPlatforms(): Observable<Platform[]> {

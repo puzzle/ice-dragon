@@ -13,7 +13,7 @@ import { requestProvider, WebLNProvider, RequestInvoiceArgs } from 'webln';
 export class DashboardComponent implements OnInit {
   platforms: Platform[];
   subscriptions: Subscription[];
-  private webLN: WebLNProvider;
+  webLN: WebLNProvider;
 
   constructor(private accountService: AccountService, private iceDragonService: IcedragonService) {}
 
