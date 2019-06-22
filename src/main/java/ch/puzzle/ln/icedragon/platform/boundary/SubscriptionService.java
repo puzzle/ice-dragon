@@ -45,7 +45,7 @@ public class SubscriptionService implements InvoiceHandler {
                         subscription.getPlatform().earnSatoshis(invoice.getAmtPaidSat());
                         platformRepository.saveAndFlush(subscription.getPlatform());
                     }
-                    LOG.debug("Received update for subscriber {} on subscription {}.", subscription.getSubscriber().getLogin(),
+                    LOG.info("Received update for subscriber {} on subscription {}.", subscription.getSubscriber().getLogin(),
                         subscription.getPaymentHash());
                     subscriptionRepository.saveAndFlush(subscription);
                     eventPublisher.publishEvent(new SubscriptionEvent(this, subscription));
