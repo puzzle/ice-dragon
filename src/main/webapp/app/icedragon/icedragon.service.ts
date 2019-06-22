@@ -34,6 +34,10 @@ export class IcedragonService {
     return this.http.get(SERVER_API_URL + 'api/platform/' + platform.id + '/token', { responseType: 'text' });
   }
 
+  redeemGainz(platform: Platform) {
+    return this.http.post<void>(SERVER_API_URL + 'api/platform/' + platform.id + '/redeem', platform.invoice);
+  }
+
   pushTokenToService(token: string, pushUrl: string): Observable<string> {
     return this.http.get(pushUrl + '?voucher=' + token, { responseType: 'text', withCredentials: true });
   }

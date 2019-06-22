@@ -12,6 +12,9 @@ import ch.puzzle.ln.repository.UserRepository;
 import org.lightningj.lnd.wrapper.StatusException;
 import org.lightningj.lnd.wrapper.ValidationException;
 import org.lightningj.lnd.wrapper.message.AddInvoiceResponse;
+import org.lightningj.lnd.wrapper.message.PayReq;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,7 @@ import static ch.puzzle.ln.ConvertUtil.bytesToHex;
 @Component
 @Transactional
 public class PlatformService {
+    private static final Logger LOG = LoggerFactory.getLogger(LndService.class);
 
     private final SubscriptionRepository subscriptionRepository;
     private final PlatformRepository platformRepository;
@@ -124,11 +128,15 @@ public class PlatformService {
         Platform platform = platformRepository.findById(platformId)
             .filter(p -> p.getOwner().getLogin().equals(currentUserLogin))
             .orElseThrow();
-
-        Long amountOfSatoshisRequested = lndService.getRequestedSatoshis(invoiceString);
+        PayReq payReq = lndService.getRequestedSatoshis(invoiceString);
+        LOG.info("requested sats" + payReq.getNumSatoshis());
+        long amountOfSatoshisRequested = payReq.getNumSatoshis();
         long amountUnpayed = platform.getUnpayedSatoshis();
+        LOG.info("Checking if have to pay " + amountOfSatoshisRequested + " sats of the possible " + amountUnpayed);
         if (amountOfSatoshisRequested <= amountUnpayed) {
+            LOG.info("Going to pay out " + amountOfSatoshisRequested + " sats of the possible " + amountUnpayed);
             lndService.payRequest(invoiceString);
+            LOG.info("Incresing payed out sats for " + platform.getName());
             platform.payOutSatoshis(amountOfSatoshisRequested);
             platformRepository.saveAndFlush(platform);
         }

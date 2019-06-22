@@ -4,6 +4,7 @@ import ch.puzzle.ln.icedragon.platform.entity.Platform;
 
 public class PlatformDTO {
 
+    private Long id;
     private String name;
     private Long amountPerHour;
     private String serviceUrl;
@@ -13,6 +14,7 @@ public class PlatformDTO {
     private Long payedOutSatoshis;
 
     public PlatformDTO(Platform platform) {
+        this.id = platform.getId();
         this.name = platform.getName();
         this.amountPerHour = platform.getAmountPerHour();
         this.serviceUrl = platform.getServiceUrl();
@@ -20,6 +22,14 @@ public class PlatformDTO {
         this.paymentConfirmationSecret = platform.getPaymentConfirmationSecret();
         this.earnedSatoshis = platform.getEarnedSatoshis();
         this.payedOutSatoshis = platform.getPayedOutSatoshis();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

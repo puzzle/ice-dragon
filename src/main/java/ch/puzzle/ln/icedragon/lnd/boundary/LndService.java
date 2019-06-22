@@ -30,6 +30,7 @@ public class LndService implements StreamObserver<Invoice> {
     private final ResourceLoader resourceLoader;
     private AsynchronousLndAPI asyncAPI;
     private SynchronousLndAPI syncInvoiceAPI;
+    private SynchronousLndAPI syncAdminAPI;
     private SynchronousLndAPI syncReadOnlyAPI;
     private final Set<InvoiceHandler> invoiceHandlers = new HashSet<>();
 
@@ -61,6 +62,18 @@ public class LndService implements StreamObserver<Invoice> {
         return addInvoice(invoice);
     }
 
+
+
+    public PayReq getRequestedSatoshis(String invoiceString) throws IOException, StatusException, ValidationException {
+        return getSyncReadonlyApi().decodePayReq(invoiceString);
+    }
+
+    public void payRequest(String request) throws StatusException, ValidationException, IOException {
+        SendRequest sendRequest = new SendRequest();
+        sendRequest.setPaymentRequest(request);
+        sendPayment(sendRequest);
+    }
+
     private VerifyMessageResponse verifyMessage(String message, String signedMessage) throws IOException, StatusException, ValidationException {
         LOG.info("verifyMessage called with message={}, signedMessage={}", message, signedMessage);
         try {
@@ -84,6 +97,17 @@ public class LndService implements StreamObserver<Invoice> {
         }
     }
 
+    private SendResponse sendPayment(SendRequest sendRequest) throws IOException, StatusException, ValidationException {
+        LOG.info("sendPayment called with sendRequest={}", sendRequest.getPaymentHashString());
+        try {
+            return getSyncAdminApi().sendPaymentSync(sendRequest);
+        } catch (StatusException | ValidationException | IOException e) {
+            LOG.warn("addInvoice call failed, retrying with fresh api");
+            resetSyncAdminApi();
+            return getSyncAdminApi().sendPaymentSync(sendRequest);
+        }
+    }
+
 
     private AsynchronousLndAPI getAsyncApi() throws IOException {
         if (asyncAPI == null) {
@@ -95,6 +119,18 @@ public class LndService implements StreamObserver<Invoice> {
             );
         }
         return asyncAPI;
+    }
+
+    private SynchronousLndAPI getSyncAdminApi() throws IOException {
+        if (syncAdminAPI == null) {
+            syncAdminAPI = new SynchronousLndAPI(
+                lnd.getHost(),
+                lnd.getPort(),
+                getSslContext(),
+                lnd.getAdminMacaroonContext()
+            );
+        }
+        return syncAdminAPI;
     }
 
     private SynchronousLndAPI getSyncInvoiceApi() throws IOException {
@@ -209,6 +245,18 @@ public class LndService implements StreamObserver<Invoice> {
         }
     }
 
+    private void resetSyncAdminApi() {
+        if (syncAdminAPI != null) {
+            try {
+                syncAdminAPI.close();
+            } catch (StatusException e) {
+                LOG.error("Couldn't close sync admin api", e);
+            } finally {
+                syncAdminAPI = null;
+            }
+        }
+    }
+
     private void resetAsyncApi() {
         if (asyncAPI != null) {
             try {
@@ -219,15 +267,5 @@ public class LndService implements StreamObserver<Invoice> {
                 asyncAPI = null;
             }
         }
-    }
-
-    public Long getRequestedSatoshis(String invoiceString) throws IOException, StatusException, ValidationException {
-        return getSyncReadonlyApi().decodePayReq(invoiceString).getNumSatoshis();
-    }
-
-    public void payRequest(String request) throws StatusException, ValidationException {
-        SendRequest sendRequest = new SendRequest();
-        sendRequest.setPaymentRequest(request);
-        syncInvoiceAPI.sendPaymentSync(sendRequest);
     }
 }

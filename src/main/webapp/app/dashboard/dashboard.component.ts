@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from 'app/icedragon/platform.model';
 import { AccountService } from 'app/core';
 import { Subscription } from 'app/icedragon/subscription.model';
+import { IcedragonService } from 'app/icedragon/icedragon.service';
 
 @Component({
   selector: 'jhi-dasboard',
@@ -12,13 +13,10 @@ export class DashboardComponent implements OnInit {
   platforms: Platform[];
   subscriptions: Subscription[];
 
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService, private iceDragonService: IcedragonService) {}
 
   ngOnInit() {
-    this.accountService.identity(false).then(account => {
-      this.platforms = account.platforms;
-      this.subscriptions = account.subscriptions.sort(this.getSubscriptionSorter());
-    });
+    this.loadAccount(false);
   }
 
   getSubscriptionSorter() {
@@ -30,7 +28,22 @@ export class DashboardComponent implements OnInit {
           return 1;
         }
       }
-      return s2.validFrom.localeCompare(s1.validFrom);
+      return (s2.validFrom || '0').localeCompare(s1.validFrom || '0');
     };
+  }
+
+  redeemSatoshis(platform: Platform) {
+    platform.redeeming = true;
+    this.iceDragonService.redeemGainz(platform).subscribe(() => {
+      this.loadAccount(true);
+      platform.redeeming = false;
+    });
+  }
+
+  loadAccount(force: boolean) {
+    this.accountService.identity(force).then(account => {
+      this.platforms = account.platforms.sort((a, b) => a.id - b.id);
+      this.subscriptions = account.subscriptions.sort(this.getSubscriptionSorter());
+    });
   }
 }

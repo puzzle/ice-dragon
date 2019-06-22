@@ -1,4 +1,5 @@
 export interface Platform {
+  redeeming?: boolean;
   id: number;
   name: string;
   amountPerHour: number;
@@ -6,4 +7,5 @@ export interface Platform {
   contentUrl: string;
   earnedSatoshis: number;
   payedOutSatoshis: number;
+  invoice?: string;
 }
