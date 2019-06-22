@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { JhiEventManager } from 'ng-jhipster';
 import { flash } from 'light-it-up';
 import * as $ from 'jquery';
@@ -63,8 +63,11 @@ export class JhiSubscribeModalComponent implements OnInit {
           this.invoice = invoice;
           this.invoiceService.subscribe();
           this.invoiceService.receive().subscribe(val => {
-            if (val.id === this.invoice.id && val.settled === true) {
-              this.invoicePaid();
+            if (val.id === this.invoice.id && val.active === true) {
+              this.service.getToken(this.platform).subscribe(token => {
+                console.log('Got token ' + token);
+                this.invoicePaid();
+              });
             }
           });
           if (this.webLN) {

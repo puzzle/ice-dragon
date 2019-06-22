@@ -18,7 +18,6 @@ public class SubscriptionWSService implements ApplicationListener<SubscriptionEv
     @Override
     public void onApplicationEvent(SubscriptionEvent event) {
         Subscription subscription = event.getSubscription();
-        messagingTemplate.convertAndSendToUser(subscription.getSubscriber().getLogin(), "/topic/invoice",
-            event.getSubscription());
+        messagingTemplate.convertAndSend("/topic/invoice", event.getSubscription());
     }
 }

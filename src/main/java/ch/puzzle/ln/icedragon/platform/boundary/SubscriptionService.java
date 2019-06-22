@@ -39,7 +39,7 @@ public class SubscriptionService implements InvoiceHandler {
     public void handleInvoiceUpdated(String hashHex, org.lightningj.lnd.wrapper.message.Invoice invoice) {
         subscriptionRepository.findByPaymentHash(hashHex)
             .ifPresentOrElse(subscription -> {
-                    if (invoice.getSettled() && subscription.getPreImage() == null) {
+                    if (invoice.getSettled()) {
                         subscription.setValidFrom(unixTimestampToInstant(invoice.getSettleDate()));
                         subscription.setPreImage(bytesToHex(invoice.getRPreimage()));
                         subscription.getPlatform().earnSatoshis(invoice.getAmtPaidSat());

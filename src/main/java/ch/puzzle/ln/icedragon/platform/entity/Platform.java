@@ -49,7 +49,7 @@ public class Platform {
     private Long payedOutSatoshis = 0L;
 
     public Platform() {
-        this.paymentConfirmationSecret = UUID.randomUUID().toString();
+        this.paymentConfirmationSecret = UUID.randomUUID().toString() + UUID.randomUUID().toString();
     }
 
     public Long getId() {

@@ -29,4 +29,8 @@ export class IcedragonService {
   addSubscription(platform: Platform, duration: number): Observable<Subscription> {
     return this.http.post<Subscription>(SERVER_API_URL + 'api/platform/' + platform.id + '/subscription', { duration });
   }
+
+  getToken(platform: Platform): Observable<string> {
+    return this.http.get(SERVER_API_URL + 'api/platform/' + platform.id + '/token', { responseType: 'text' });
+  }
 }
