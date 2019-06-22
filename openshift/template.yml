@@ -364,6 +364,8 @@ objects:
             - env:
                 - name: SECRET
                   value: ${CONTENT_DEMO_SECRET}
+                - name: CORS_DOMAIN
+                  value: ${CONTENT_DEMO_CORS_DOMAIN}
               name: ice-dragon-content-demo
               image: ice-dragon-content-demo
               imagePullPolicy: Always
@@ -579,4 +581,8 @@ parameters:
 
   - name: CONTENT_DEMO_SECRET
     description: Secret for the dragons-nest.php of the demo application
+    value: ""
+
+  - name: CONTENT_DEMO_CORS_DOMAIN
+    description: CORS domain for the dragons-nest.php of the demo application
     value: ""

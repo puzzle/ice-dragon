@@ -8,4 +8,5 @@ services:
     ports:
       - 8088:80
     environment:
-      - SECRET=f143b7b9-f032-4847-a789-41f77c71ce9fb95fba76-5966-4bc7-9f28-37c67c5bded0cf70813d-fa0b-47d3-ad70-1423627d4867f2b58d8e-df84-41bd-b293-1bb3dd7057ea
+      - SECRET=f143b7b9-f032-4847-a789-41f77c71ce9fb95fba76-5966-4bc7-9f28-37c67c5bded0cf70813d-fa0b-47d3-ad70-1423627d4867f2b58d8e-df84-41bd-b293-000000000000
+      - CORS_DOMAIN=http://localhost:9000

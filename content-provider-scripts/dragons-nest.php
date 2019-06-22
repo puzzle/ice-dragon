@@ -1,7 +1,10 @@
 <?php
 
-// allow CORS
-header("Access-Control-Allow-Origin: *");
+// allow CORS for ice dragon
+header("Access-Control-Allow-Origin: https://ice-dragon.ose3.puzzle.ch");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Expose-Headers: Set-Cookie");
 
 // ----------------------------- COPY FROM https://github.com/adhocore/php-jwt/blob/master/src/functions.php -------------------------------
 

@@ -9,8 +9,8 @@ import { Subscription } from 'app/icedragon/subscription.model';
   styleUrls: ['dashboard.scss']
 })
 export class DashboardComponent implements OnInit {
-  private platforms: Platform[];
-  private subscriptions: Subscription[];
+  platforms: Platform[];
+  subscriptions: Subscription[];
 
   constructor(private accountService: AccountService) {}
 
@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  private getSubscriptionSorter() {
+  getSubscriptionSorter() {
     return (s1: Subscription, s2: Subscription) => {
       if (s1.active !== s2.active) {
         if (s1.active === true) {

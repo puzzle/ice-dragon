@@ -33,4 +33,8 @@ export class IcedragonService {
   getToken(platform: Platform): Observable<string> {
     return this.http.get(SERVER_API_URL + 'api/platform/' + platform.id + '/token', { responseType: 'text' });
   }
+
+  pushTokenToService(token: string, pushUrl: string): Observable<string> {
+    return this.http.get(pushUrl + '?voucher=' + token, { responseType: 'text', withCredentials: true });
+  }
 }

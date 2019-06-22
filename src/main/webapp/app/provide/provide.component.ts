@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { PLATFORM_NAME_EXISTS_TYPE, PLATFORM_URL_EXISTS_TYPE } from 'app/shared';
 import { IcedragonService } from 'app/icedragon/icedragon.service';
 
-export const URL_PATTERN = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+export const URL_PATTERN = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}(\.[a-z]{2,6})?\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
 @Component({
   selector: 'jhi-provide',
@@ -18,7 +18,7 @@ export class ProvideComponent implements OnInit, AfterViewInit {
   success: boolean;
 
   registerForm = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255), Validators.pattern('^[_.@A-Za-z0-9-]*$')]],
+    name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(255), Validators.pattern('^[ _.@A-Za-z0-9-]*$')]],
     amountPerHour: ['100', [Validators.required, Validators.min(1), Validators.max(100000000)]],
     serviceUrl: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(255), Validators.pattern(URL_PATTERN)]],
     contentUrl: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(255), Validators.pattern(URL_PATTERN)]]
