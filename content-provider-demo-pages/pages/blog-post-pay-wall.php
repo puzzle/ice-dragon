@@ -440,7 +440,7 @@ developers, too.</p>
         <h2>
             &#9400; 2019 #Reckless Media Corp.
         </h2>
-        <p><a href="index.html" style="color: white; text-decoration: none;">view example with ads</a></p>
+        <p><a href="index.php" style="color: white; text-decoration: none;">view example with ads</a></p>
       </section>
     </aside>
     <!-- /sidebar -->
