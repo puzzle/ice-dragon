@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   checkLogin() {
-    this.accountService.identity().then((account: Account) => {
+    this.accountService.identity(true).then((account: Account) => {
       this.account = account;
       this.getPlatforms();
     });
@@ -88,6 +88,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   subscribe(platform: Platform) {
-    this.subscribeDialog.openDialog(platform);
+    this.subscribeDialog.openDialog(platform).result.then(() => this.checkLogin());
+  }
+
+  hasSubscription(platform: Platform) {
+    if (this.platforms && this.account && this.account.subscriptions) {
+    }
   }
 }

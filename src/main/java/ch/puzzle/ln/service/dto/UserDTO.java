@@ -10,8 +10,12 @@ import javax.validation.constraints.NotBlank;
 
 import javax.validation.constraints.*;
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -55,6 +59,10 @@ public class UserDTO {
 
     private boolean isReckless;
 
+    private Set<SubscriptionDTO> subscriptions;
+
+    private Set<PlatformDTO> platforms;
+
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -74,8 +82,14 @@ public class UserDTO {
         this.lastModifiedDate = user.getLastModifiedDate();
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
-            .collect(Collectors.toSet());
+            .collect(toSet());
         this.isReckless = user.isReckless();
+        if (user.getSubscriptions() != null) {
+            subscriptions = user.getSubscriptions().stream().map(SubscriptionDTO::new).collect(toSet());
+        }
+        if (user.getPlatforms() != null) {
+            platforms = user.getPlatforms().stream().map(PlatformDTO::new).collect(toSet());
+        }
     }
 
     public Long getId() {
@@ -188,6 +202,22 @@ public class UserDTO {
 
     public void setReckless(boolean reckless) {
         isReckless = reckless;
+    }
+
+    public Set<SubscriptionDTO> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(Set<SubscriptionDTO> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public Set<PlatformDTO> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(Set<PlatformDTO> platforms) {
+        this.platforms = platforms;
     }
 
     @Override
