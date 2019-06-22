@@ -65,8 +65,13 @@ export class JhiSubscribeModalComponent implements OnInit {
           this.invoiceService.receive().subscribe(val => {
             if (val.id === this.invoice.id && val.active === true) {
               this.service.getToken(this.platform).subscribe(token => {
-                console.log('Got token ' + token);
-                this.invoicePaid();
+                this.service.pushTokenToService(token, this.platform.serviceUrl).subscribe(response => {
+                  if (response === 'success') {
+                    this.invoicePaid();
+                  } else {
+                    throw new Error('Something went wrong, the content provider probably configured their page wrong.');
+                  }
+                });
               });
             }
           });

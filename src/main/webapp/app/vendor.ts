@@ -41,7 +41,8 @@ import {
   faTasks,
   faHome,
   faArrowAltCircleUp,
-  faCheck
+  faCheck,
+  faThLarge
 } from '@fortawesome/free-solid-svg-icons';
 
 // Adds the SVG icon to the library so you can use it in your page
@@ -81,5 +82,6 @@ library.add(faTrashAlt);
 library.add(faAsterisk);
 library.add(faArrowAltCircleUp);
 library.add(faCheck);
+library.add(faThLarge);
 
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

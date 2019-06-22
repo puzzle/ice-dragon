@@ -11,7 +11,3 @@ export interface Subscription {
   active?: boolean;
   platformId?: number;
 }
-
-export function random(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
