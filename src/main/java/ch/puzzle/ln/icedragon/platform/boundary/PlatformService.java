@@ -9,6 +9,7 @@ import ch.puzzle.ln.icedragon.platform.entity.PlatformRequest;
 import ch.puzzle.ln.icedragon.platform.entity.Subscription;
 import ch.puzzle.ln.icedragon.platform.entity.SubscriptionRequest;
 import ch.puzzle.ln.repository.UserRepository;
+import io.undertow.util.BadRequestException;
 import org.lightningj.lnd.wrapper.StatusException;
 import org.lightningj.lnd.wrapper.ValidationException;
 import org.lightningj.lnd.wrapper.message.AddInvoiceResponse;
@@ -139,6 +140,8 @@ public class PlatformService {
             LOG.info("Incresing payed out sats for " + platform.getName());
             platform.payOutSatoshis(amountOfSatoshisRequested);
             platformRepository.saveAndFlush(platform);
+        } else {
+            throw new RedeemAmountTooHigh();
         }
     }
 }
