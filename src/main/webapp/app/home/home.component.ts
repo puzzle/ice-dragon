@@ -92,7 +92,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   hasSubscription(platform: Platform) {
     if (this.platforms && this.account && this.account.subscriptions) {
-      return lodash.some(this.account.subscriptions, s => s.platformId === platform.id);
+      return lodash.some(this.account.subscriptions, s => s.platformId === platform.id && s.active === true);
     }
     return false;
   }

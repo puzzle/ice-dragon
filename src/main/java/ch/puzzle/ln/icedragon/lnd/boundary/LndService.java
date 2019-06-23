@@ -46,7 +46,6 @@ public class LndService implements StreamObserver<Invoice> {
         getAsyncApi().subscribeInvoices(invoiceSubscription, this);
     }
 
-
     public void verifyMessage(String message, String signedMessage, String publicKey) throws IOException, StatusException, ValidationException {
         VerifyMessageResponse response = verifyMessage(message, signedMessage);
 
@@ -61,8 +60,6 @@ public class LndService implements StreamObserver<Invoice> {
         invoice.setMemo(message);
         return addInvoice(invoice);
     }
-
-
 
     public PayReq getRequestedSatoshis(String invoiceString) throws IOException, StatusException, ValidationException {
         return getSyncReadonlyApi().decodePayReq(invoiceString);
@@ -85,7 +82,6 @@ public class LndService implements StreamObserver<Invoice> {
         }
     }
 
-
     private AddInvoiceResponse addInvoice(Invoice invoice) throws IOException, StatusException, ValidationException {
         LOG.info("addInvoice called with memo={}, amount={}", invoice.getMemo(), invoice.getValue());
         try {
@@ -107,7 +103,6 @@ public class LndService implements StreamObserver<Invoice> {
             return getSyncAdminApi().sendPaymentSync(sendRequest);
         }
     }
-
 
     private AsynchronousLndAPI getAsyncApi() throws IOException {
         if (asyncAPI == null) {
@@ -156,7 +151,6 @@ public class LndService implements StreamObserver<Invoice> {
         }
         return syncReadOnlyAPI;
     }
-
 
     private SslContext getSslContext() throws IOException {
         return GrpcSslContexts
