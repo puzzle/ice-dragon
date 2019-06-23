@@ -10,6 +10,10 @@ This README will also be submitted as part of the final solution/submission.
 - URL to public GitHub repository: [github.com/puzzle/ice-dragon](https://github.com/puzzle/ice-dragon)
 - URL to the demo content provider page: [ice-dragon-content-demo.ose3.puzzle.ch](https://ice-dragon-content-demo.ose3.puzzle.ch)
 - Short description: see next chapter
+- Requirements to test/try out:
+  - You will need a Bitcoin Lightning Network wallet that is set to testnet to create a subscription.
+  - If you also have the Joule browser extension installed and connected to your node, you can try out the
+    `#reckless` login. If not, you can use the credentials provided below.
 
 # What is Ice Dragon?
 
