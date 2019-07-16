@@ -1,7 +1,7 @@
 <?php
 
 // allow CORS for ice dragon
-header("Access-Control-Allow-Origin: https://ice-dragon.ose3.puzzle.ch");
+header("Access-Control-Allow-Origin: https://ice-dragon.ocp.puzzle.ch");
 header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Expose-Headers: Set-Cookie");
