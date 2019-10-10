@@ -64,15 +64,7 @@ export class JhiSubscribeModalComponent implements OnInit {
           this.invoiceService.subscribe();
           this.invoiceService.receive().subscribe(val => {
             if (val.id === this.invoice.id && val.active === true) {
-              this.service.getToken(this.platform).subscribe(token => {
-                this.service.pushTokenToService(token, this.platform.serviceUrl).subscribe(response => {
-                  if (response === 'success') {
-                    this.invoicePaid();
-                  } else {
-                    throw new Error('Something went wrong, the content provider probably configured their page wrong.');
-                  }
-                });
-              });
+              this.getAndSetToken();
             }
           });
           if (this.webLN) {
@@ -81,6 +73,18 @@ export class JhiSubscribeModalComponent implements OnInit {
         },
         err => (this.checkoutError = err.error.message || err.error.title)
       );
+  }
+
+  getAndSetToken() {
+    this.service.getToken(this.platform).subscribe(token => {
+      this.service.pushTokenToService(token, this.platform.serviceUrl).subscribe(response => {
+        if (response === 'success') {
+          this.invoicePaid();
+        } else {
+          throw new Error('Something went wrong, the content provider probably configured their page wrong.');
+        }
+      });
+    });
   }
 
   invoicePaid() {

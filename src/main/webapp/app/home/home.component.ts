@@ -55,10 +55,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   registerWebLN() {
-    requestProvider().then(provider => {
-      this.webLN = provider;
-      this.webLN.getInfo().then(info => (this.info = info));
-    });
+    requestProvider()
+      .then(provider => {
+        this.webLN = provider;
+        this.webLN.getInfo().then(info => (this.info = info));
+      })
+      .catch(error => console.error(error.toString()));
   }
 
   isAuthenticated() {
@@ -88,6 +90,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   subscribe(platform: Platform) {
     this.subscribeDialog.openDialog(platform).result.then(() => this.checkLogin());
+  }
+
+  activate(platform: Platform) {
+    this.service.getToken(platform).subscribe(token => {
+      this.service.pushTokenToService(token, platform.serviceUrl).subscribe(
+        response => {
+          if (response === 'success') {
+            platform.refreshed = true;
+          } else {
+            throw new Error('Something went wrong, the content provider probably configured their page wrong.');
+          }
+        },
+        error => {
+          throw new Error(error.message);
+        }
+      );
+    });
   }
 
   hasSubscription(platform: Platform) {

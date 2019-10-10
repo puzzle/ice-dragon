@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -37,7 +36,9 @@ public class Subscription {
     private String invoiceString;
 
     public boolean isActive() {
-        return Objects.nonNull(paymentHash) && Objects.nonNull(validFrom) && Objects.nonNull(duration) &&
+        return Objects.nonNull(paymentHash) &&
+            Objects.nonNull(validFrom) &&
+            Objects.nonNull(duration) &&
             validFrom.plus(duration, ChronoUnit.HOURS).isAfter(Instant.now());
     }
 

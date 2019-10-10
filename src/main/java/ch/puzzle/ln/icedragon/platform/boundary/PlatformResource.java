@@ -6,8 +6,6 @@ import ch.puzzle.ln.icedragon.platform.entity.Subscription;
 import ch.puzzle.ln.icedragon.platform.entity.SubscriptionRequest;
 import ch.puzzle.ln.security.SecurityUtils;
 import ch.puzzle.ln.security.jwt.TokenProvider;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.lightningj.lnd.wrapper.StatusException;
 import org.lightningj.lnd.wrapper.ValidationException;
 import org.slf4j.Logger;
@@ -17,14 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
-import java.security.Key;
-import java.util.Date;
 import java.util.List;
-
-import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 
 @RestController
 @RequestMapping("/api/platform")

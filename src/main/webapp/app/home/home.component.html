@@ -124,16 +124,18 @@
             <h5 class="mb-1">{{ platform.name }}</h5>
             <small>{{ platform.amountPerHour }} sat/hour</small>
           </div>
-          <div class="mb-1" *ngIf="!hasSubscription(platform)">
-            <a [href]="platform.contentUrl">{{ platform.contentUrl }}</a>
-            <div class="right" style="text-align: right;">
+          <div class="mb-1">
+              <div *ngIf="hasSubscription(platform)">
+                  <fa-icon icon="check"></fa-icon> &nbsp; You have already subscribed to this service! Visit <br />
+              </div>
+              <a [href]="platform.contentUrl" target="_blank">{{ platform.contentUrl }}</a>
+            <div class="right" style="text-align: right;" *ngIf="!hasSubscription(platform)">
               <button class="btn btn-primary" (click)="subscribe(platform)">Subscribe</button>
             </div>
+              <div class="right" style="text-align: right;" *ngIf="hasSubscription(platform) && !platform.refreshed">
+                  <button class="btn btn-primary" (click)="activate(platform)">Activate</button>
+              </div>
           </div>
-          <p class="mb-1" *ngIf="hasSubscription(platform)">
-            <fa-icon icon="check"></fa-icon> &nbsp; You have already subscribed to this service! Visit <br />
-            <a [href]="platform.contentUrl">{{ platform.contentUrl }}</a>
-          </p>
         </div>
       </div>
     </div>

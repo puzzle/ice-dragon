@@ -2,11 +2,11 @@ package ch.puzzle.ln.icedragon.lnd.boundary;
 
 import ch.puzzle.ln.config.ApplicationProperties;
 import io.grpc.Status;
-import io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.shaded.io.netty.handler.ssl.SslContext;
+import io.grpc.netty.shaded.io.netty.handler.ssl.SslContextBuilder;
+import io.grpc.netty.shaded.io.netty.handler.ssl.SslProvider;
 import io.grpc.stub.StreamObserver;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.SslProvider;
 import org.lightningj.lnd.wrapper.*;
 import org.lightningj.lnd.wrapper.message.*;
 import org.slf4j.Logger;
