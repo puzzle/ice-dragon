@@ -91,7 +91,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   subscribe(platform: Platform) {
     this.subscribeDialog.openDialog(platform).result.then(() => {
       this.checkLogin();
-      this.platforms.find(p => p.id === platform.id).refreshed = true;
     });
   }
 
@@ -99,6 +98,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.service.getToken(platform).subscribe(token => {
       this.service.pushTokenToService(token, platform.serviceUrl).subscribe(
         response => {
+          this.subscribeDialog.openDialog(platform, true);
           if (response === 'success') {
             platform.refreshed = true;
           } else {
@@ -106,6 +106,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           }
         },
         error => {
+          this.subscribeDialog.openDialog(platform, true);
           throw new Error(error.message);
         }
       );

@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">Create subscription for {{platform.name}}</h4>
+    <h4 class="modal-title">Subscription for {{platform.name}}</h4>
     <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')"><span
         aria-hidden="true">x</span>
     </button>
@@ -54,11 +54,9 @@
             </div>
         </div>
         <div class="col-md-11 payment-request" *ngIf="paid">
-            <fa-icon size="6x" icon="check-circle" class="success"></fa-icon>
             <div class="intro">
-                Thank you for your payment of {{durationHours * platform.amountPerHour | number : '1.0-0'}} Satoshi.<br/>
-                You can now visit the platform <a [href]="platform.contentUrl" target="_blank">{{platform.contentUrl}}</a>
-                advertisement and paywall free for {{durationHours}} hour(s).
+                You can consume the content at <br><a [href]="platform.contentUrl" target="_blank">{{platform.contentUrl}}</a><br>
+                advertisement and paywall free.
             </div>
             <button (click)="close()" class="btn btn-primary">
                 Close
