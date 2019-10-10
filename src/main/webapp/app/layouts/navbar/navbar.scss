@@ -44,11 +44,19 @@ Navbar
 /* ==========================================================================
 Logo styles
 ========================================================================== */
+.logo-img-wide {
+  height: 45px;
+  width: 145px;
+  display: inline-block;
+  vertical-align: middle;
+  background: url('../../../content/images/ice-dragon-small-wide.svg') no-repeat center center;
+  background-size: contain;
+}
 .logo-img {
   height: 45px;
   width: 45px;
   display: inline-block;
   vertical-align: middle;
-  background: url('../../../content/images/ice-dragon-small.png') no-repeat center center;
+  background: url('../../../content/images/ice-dragon-small.svg') no-repeat center center;
   background-size: contain;
 }

@@ -89,7 +89,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   subscribe(platform: Platform) {
-    this.subscribeDialog.openDialog(platform).result.then(() => this.checkLogin());
+    this.subscribeDialog.openDialog(platform).result.then(() => {
+      this.checkLogin();
+      this.platforms.find(p => p.id === platform.id).refreshed = true;
+    });
   }
 
   activate(platform: Platform) {
