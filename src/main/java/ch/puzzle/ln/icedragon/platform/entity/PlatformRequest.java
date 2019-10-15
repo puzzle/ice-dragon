@@ -6,6 +6,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class PlatformRequest {
+
+    private Long id;
     @NotNull
     private String name;
     @NotNull
@@ -27,6 +29,15 @@ public class PlatformRequest {
     public String getName() {
         return this.name;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getAmountPerHour() {
         return this.amountPerHour;
     }

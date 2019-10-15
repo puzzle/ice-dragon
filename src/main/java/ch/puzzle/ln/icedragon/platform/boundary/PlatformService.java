@@ -9,7 +9,6 @@ import ch.puzzle.ln.icedragon.platform.entity.PlatformRequest;
 import ch.puzzle.ln.icedragon.platform.entity.Subscription;
 import ch.puzzle.ln.icedragon.platform.entity.SubscriptionRequest;
 import ch.puzzle.ln.repository.UserRepository;
-import io.undertow.util.BadRequestException;
 import org.lightningj.lnd.wrapper.StatusException;
 import org.lightningj.lnd.wrapper.ValidationException;
 import org.lightningj.lnd.wrapper.message.AddInvoiceResponse;
@@ -88,6 +87,40 @@ public class PlatformService {
         platform.setServiceUrl(platformRequest.getServiceUrl());
         platformRepository.saveAndFlush(platform);
         return platform;
+    }
+
+
+
+    public Platform updatePlatform(String currentUserLogin, PlatformRequest platformRequest) {
+        User owner = userRepository.findOneByLogin(currentUserLogin)
+            .orElseThrow();
+
+        Platform platform = platformRepository.findById(platformRequest.getId())
+            .orElseThrow();
+
+        if (platform.getOwner().equals(owner)) {
+            platform.setName(platformRequest.getName());
+            platform.setAmountPerHour(platformRequest.getAmountPerHour());
+            platform.setContentUrl(platformRequest.getContentUrl());
+            platform.setServiceUrl(platformRequest.getServiceUrl());
+            platformRepository.saveAndFlush(platform);
+            return platform;
+        }
+        return null;
+    }
+
+    public boolean deletePlatform(String currentUserLogin, PlatformRequest platformRequest) {
+        User owner = userRepository.findOneByLogin(currentUserLogin)
+            .orElseThrow();
+
+        Platform platform = platformRepository.findById(platformRequest.getId())
+            .orElseThrow();
+
+        if (platform.getOwner().equals(owner)) {
+            platformRepository.delete(platform);
+            return true;
+        }
+        return false;
     }
 
     public Platform findPlatform(Long platformId) {

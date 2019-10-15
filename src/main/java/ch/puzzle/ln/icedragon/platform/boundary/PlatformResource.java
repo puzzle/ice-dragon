@@ -11,6 +11,7 @@ import org.lightningj.lnd.wrapper.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -44,6 +45,43 @@ public class PlatformResource {
             return ResponseEntity
                 .created(UriComponentsBuilder.fromUriString("/api/platform/{id}").build(platform.getId()))
                 .body(platform.getPaymentConfirmationSecret());
+        } catch (DataIntegrityViolationException e) {
+            if (e.getMessage() != null && e.getMessage().contains("ux_platform_name")) {
+                throw new NameAlreadyExists();
+            } else if (e.getMessage() != null &&
+                (e.getMessage().contains("ux_platform_service_url") || e.getMessage().contains("ux_platform_content_url"))) {
+                throw new UrlAlreadyExists();
+            }
+            throw e;
+        }
+    }
+
+
+    @DeleteMapping
+    public ResponseEntity<Void> deletePlatform(@RequestBody PlatformRequest platformRequest) {
+        String currentUserLogin = SecurityUtils.getCurrentUserLogin().orElseThrow();
+        boolean success = platformService.deletePlatform(currentUserLogin, platformRequest);
+        if (success) {
+            return ResponseEntity
+                .ok()
+                .build();
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .build();
+        }
+
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> updatePlatform(@RequestBody PlatformRequest platformRequest) {
+        String currentUserLogin = SecurityUtils.getCurrentUserLogin().orElseThrow();
+        try {
+
+            Platform platform = platformService.updatePlatform(currentUserLogin, platformRequest);
+            return ResponseEntity
+                .noContent()
+                .location(UriComponentsBuilder.fromUriString("/api/platform/{id}").build(platform.getId()))
+                .build();
         } catch (DataIntegrityViolationException e) {
             if (e.getMessage() != null && e.getMessage().contains("ux_platform_name")) {
                 throw new NameAlreadyExists();
