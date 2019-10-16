@@ -109,11 +109,11 @@ public class PlatformService {
         return null;
     }
 
-    public boolean deletePlatform(String currentUserLogin, PlatformRequest platformRequest) {
+    public boolean deletePlatform(String currentUserLogin, Long id) {
         User owner = userRepository.findOneByLogin(currentUserLogin)
             .orElseThrow();
 
-        Platform platform = platformRepository.findById(platformRequest.getId())
+        Platform platform = platformRepository.findById(id)
             .orElseThrow();
 
         if (platform.getOwner().equals(owner)) {

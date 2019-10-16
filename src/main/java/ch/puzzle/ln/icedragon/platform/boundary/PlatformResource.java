@@ -57,10 +57,10 @@ public class PlatformResource {
     }
 
 
-    @DeleteMapping
-    public ResponseEntity<Void> deletePlatform(@RequestBody PlatformRequest platformRequest) {
+    @DeleteMapping(path = "{id}")
+    public ResponseEntity<Void> deletePlatform(@PathVariable(name = "id") Long id) {
         String currentUserLogin = SecurityUtils.getCurrentUserLogin().orElseThrow();
-        boolean success = platformService.deletePlatform(currentUserLogin, platformRequest);
+        boolean success = platformService.deletePlatform(currentUserLogin, id);
         if (success) {
             return ResponseEntity
                 .ok()

@@ -38,6 +38,10 @@ export class IcedragonService {
     return this.http.post<void>(SERVER_API_URL + 'api/platform/' + platform.id + '/redeem', platform.invoice);
   }
 
+  delete(platform: Platform) {
+    return this.http.delete<void>(SERVER_API_URL + 'api/platform/' + platform.id);
+  }
+
   pushTokenToService(token: string, pushUrl: string): Observable<string> {
     return this.http.get(pushUrl + '?voucher=' + token, { responseType: 'text', withCredentials: true });
   }

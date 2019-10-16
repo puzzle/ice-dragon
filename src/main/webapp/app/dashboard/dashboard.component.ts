@@ -3,7 +3,7 @@ import { Platform } from 'app/icedragon/platform.model';
 import { AccountService } from 'app/core';
 import { Subscription } from 'app/icedragon/subscription.model';
 import { IcedragonService } from 'app/icedragon/icedragon.service';
-import { requestProvider, WebLNProvider, RequestInvoiceArgs } from 'webln';
+import { requestProvider, WebLNProvider } from 'webln';
 
 @Component({
   selector: 'jhi-dasboard',
@@ -40,6 +40,12 @@ export class DashboardComponent implements OnInit {
     this.iceDragonService.redeemGainz(platform).subscribe(() => {
       this.loadAccount(true);
       platform.redeeming = false;
+    });
+  }
+
+  delete(platform: Platform) {
+    this.iceDragonService.delete(platform).subscribe(() => {
+      this.loadAccount(true);
     });
   }
 

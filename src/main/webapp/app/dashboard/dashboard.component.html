@@ -41,7 +41,7 @@
                     <div *ngFor="let platform of platforms" tabindex="-1"
                          class="list-group-item flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
-                            <h2 class="mb-1">
+                            <h2 class="mb-11">
                                 <strong>{{ platform.name }}</strong>
                             </h2>
                         </div>
@@ -93,6 +93,7 @@
                         <div class="d-flex w-100">
                             <code class="small">{{ platform.paymentConfirmationSecret }}</code>
                         </div>
+                        <a class="btn btn-danger right" (click)="delete(platform)">delete</a>
                     </div>
                 </div>
             </div>
