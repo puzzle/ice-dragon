@@ -1,4 +1,5 @@
 export interface Platform {
+  deleting: boolean;
   refreshed: boolean;
   redeeming?: boolean;
   id: number;

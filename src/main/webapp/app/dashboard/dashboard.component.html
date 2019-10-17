@@ -93,7 +93,17 @@
                         <div class="d-flex w-100">
                             <code class="small">{{ platform.paymentConfirmationSecret }}</code>
                         </div>
-                        <a class="btn btn-danger right" (click)="delete(platform)">delete</a>
+                        <div class="mt-2">
+                            <a class="btn btn-danger right" *ngIf="!platform.deleting" (click)="toggleDelete(platform)">delete</a>
+                            <div class="mb-1" *ngIf="platform.deleting">
+                                <p class="alert alert-danger" role="alert">
+                                    All unredeemed Satoshis will be donated to us!
+                                </p>
+                                <a class="btn btn-danger left" (click)="delete(platform)">delete and donate unredeemed
+                                    satoshis</a>
+                                <a class="btn btn-info right" (click)="toggleDelete(platform)">cancel</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -68,4 +68,8 @@ export class DashboardComponent implements OnInit {
       this.redeemSatoshis(platform);
     });
   }
+
+  toggleDelete(platform: Platform) {
+    platform.deleting = !platform.deleting;
+  }
 }
