@@ -19,11 +19,11 @@
                         <small style="width: 20%;">{{ subscription.duration }} hour(s)</small>
                     </div>
                     <p class="mb-1">
-                        <a [href]="subscription.platform.contentUrl">{{ subscription.platform.contentUrl }}</a>
+                        <a target="_blank" [href]="subscription.platform.contentUrl">{{ subscription.platform.contentUrl }}</a>
                     </p>
                 </div>
                 <div *ngIf="!subscriptions || subscriptions.length === 0">
-                    <i>You don't have any subscriptions yet.</i>
+                    <i>You don't have any active subscriptions right now.</i>
                 </div>
             </div>
         </div>
@@ -105,6 +105,36 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/><br/>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1>Subscriptions archive</h1>
+            Here you see a list of all your inactive subscriptions.
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="list-group">
+                <div
+                    *ngFor="let subscription of subscriptionsArchive"
+                    tabindex="-1"
+                    class="list-group-item list-group-item-action flex-column align-items-start"
+                >
+                    <div class="d-flex w-100 justify-content-between">
+                        <h3 class="mb-1" style="width: 60%;">{{ subscription.platform.name }}</h3>
+                        <small style="width: 20%;">{{ subscription.platform.amountPerHour }} sat/hour</small>
+                        <small style="width: 20%;">{{ subscription.duration }} hour(s)</small>
+                    </div>
+                    <p class="mb-1">
+                        <a target="_blank" [href]="subscription.platform.contentUrl">{{ subscription.platform.contentUrl }}</a>
+                    </p>
+                </div>
+                <div *ngIf="!subscriptionsArchive || subscriptionsArchive.length === 0">
+                    <i>You don't have any archived subscriptions yet.</i>
                 </div>
             </div>
         </div>

@@ -77,9 +77,10 @@ export class JhiSubscribeModalComponent implements OnInit {
 
   getAndSetToken() {
     this.service.getToken(this.platform).subscribe(token => {
+      this.invoicePaid();
       this.service.pushTokenToService(token, this.platform.serviceUrl).subscribe(response => {
         if (response === 'success') {
-          this.invoicePaid();
+          this.tokenPushed();
         } else {
           throw new Error('Something went wrong, the content provider probably configured their page wrong.');
         }
@@ -94,6 +95,8 @@ export class JhiSubscribeModalComponent implements OnInit {
       zIndex: 9999,
       duration: SUCCESS_FLASH_DURATION
     });
+  }
+  tokenPushed() {
     setTimeout(() => {
       this.paid = true;
     }, SUCCESS_FLASH_DURATION);

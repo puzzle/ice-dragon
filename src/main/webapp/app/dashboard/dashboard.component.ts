@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   platforms: Platform[];
   subscriptions: Subscription[];
   webLN: WebLNProvider;
+  subscriptionsArchive: Subscription[];
 
   constructor(private accountService: AccountService, private iceDragonService: IcedragonService) {}
 
@@ -52,7 +53,8 @@ export class DashboardComponent implements OnInit {
   loadAccount(force: boolean) {
     this.accountService.identity(force).then(account => {
       this.platforms = account.platforms.sort((a, b) => a.id - b.id);
-      this.subscriptions = account.subscriptions.sort(this.getSubscriptionSorter());
+      this.subscriptions = account.subscriptions.sort(this.getSubscriptionSorter()).filter(s => s.active);
+      this.subscriptionsArchive = account.subscriptions.sort(this.getSubscriptionSorter()).filter(s => !s.active);
     });
   }
 
