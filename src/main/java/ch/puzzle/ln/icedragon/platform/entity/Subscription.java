@@ -1,6 +1,8 @@
 package ch.puzzle.ln.icedragon.platform.entity;
 
 import ch.puzzle.ln.domain.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,9 +20,11 @@ public class Subscription {
 
     @NotNull
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private User subscriber;
 
     @NotNull
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     @ManyToOne
     private Platform platform;
 

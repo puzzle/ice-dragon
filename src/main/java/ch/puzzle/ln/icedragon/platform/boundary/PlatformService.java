@@ -117,6 +117,8 @@ public class PlatformService {
             .orElseThrow();
 
         if (platform.getOwner().equals(owner)) {
+            subscriptionRepository.deleteAll(
+                subscriptionRepository.findAllByPlatform(platform));
             platformRepository.delete(platform);
             return true;
         }

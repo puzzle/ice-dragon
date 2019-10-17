@@ -1,13 +1,14 @@
 package ch.puzzle.ln.icedragon.platform.entity;
 
 import ch.puzzle.ln.domain.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 
@@ -20,6 +21,7 @@ public class Platform {
     private Long id;
 
     @NotNull
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     @ManyToOne
     private User owner;
     @NotNull
